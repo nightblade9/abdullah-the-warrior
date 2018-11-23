@@ -1,6 +1,6 @@
 # Eman Gems
 
-C# Roguelike/Roguelite about eman, the names of Allah, and really shiny gems. Made with .NET Core, GoRogue, and SadConsole.
+A modern terminal C# roguelike/roguelite about family, feaith, the names of Allah, laying the smackdown on gobs of enemies, and really shiny gems. Made with .NET Core, GoRogue, and SadConsole.
 
 # Planned Features
 

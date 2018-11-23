@@ -59,7 +59,6 @@ namespace DeenGames.EmanGems
 
             // Initialize the windows
             Global.CurrentScreen.Children.Add(thisConsole);
-
         }
 
         private static void Update(GameTime time)

@@ -8,6 +8,8 @@ namespace DeenGames.EmanGems.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
+        private readonly Color DarkGrey = Color.FromNonPremultiplied(64,64,64,255);
+
         // TODO: use an entity with a position component
         private int playerX = 0;
         private int playerY = 0;
@@ -66,7 +68,7 @@ namespace DeenGames.EmanGems.Prototype
                     }
                     else
                     {
-                        this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = Color.FromNonPremultiplied(64,64,64,255) });
+                        this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = DarkGrey });
                         this.SetGlyph(x, y, '.');
                     }
                 }

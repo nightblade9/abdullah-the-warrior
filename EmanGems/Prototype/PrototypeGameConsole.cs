@@ -16,8 +16,9 @@ namespace DeenGames.EmanGems.Prototype
         {
             playerX = width / 2;
             playerY = height / 3;
-        }
 
+            this.GenerateMonsters();
+        }
         public override void Update(System.TimeSpan delta)
         {
             this.ProcessPlayerInput();
@@ -55,24 +56,34 @@ namespace DeenGames.EmanGems.Prototype
                 {
                     if (x == 0 || y == 0 || x == this.Width - 1 || y == this.Height - 1)
                     {
+                        this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = Color.Gray });
                         this.SetGlyph(x, y, '#');
                     }
                     else if (x >= 35 && x <= 45 && y >= 15 && y <= 20)
                     {
+                        this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = Color.Gray });
                         this.SetGlyph(x, y, '#');
                     }
                     else
                     {
+                        this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = Color.FromNonPremultiplied(64,64,64,255) });
                         this.SetGlyph(x, y, '.');
                     }
                 }
             }
 
+            this.SetCellAppearance(playerX, playerY, new Cell() { Background = Color.Black, Foreground = Color.White });
             this.SetGlyph(playerX, playerY, '@');
+        }
+
+        private void GenerateMonsters()
+        {
+            //throw new NotImplementedException();
         }
 
         private bool IsWalkable(int x, int y)
         {
+            // Poor man's data structures: visual representation *is* our data.
             return this.GetGlyph(x, y) == '.';
         }
     }

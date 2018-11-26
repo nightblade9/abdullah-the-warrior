@@ -1,13 +1,17 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
+using DeenGames.EmanGems.Prototype;
 
 namespace DeenGames.EmanGems
 {
     public static class Program
     {
-        private static SadConsole.Console thisConsole;
+        private static PrototypeGameConsole thisConsole;
 
+        // TODO: for production, use 120x50, it's a nice, modern size.
+        private const int GameWidthInTiles = 80;
+        private const int GameHeightInTiles = 34;
 
         [STAThread]
         static void Main()
@@ -17,7 +21,7 @@ namespace DeenGames.EmanGems
 
             // Setup the engine and creat the main window.
             // 120x50
-            SadConsole.Game.Create("Fonts/IBM.font", 120, 50);
+            SadConsole.Game.Create("Fonts/IBM.font", GameWidthInTiles, GameHeightInTiles);
             
             //SadConsole.Engine.Initialize("IBM.font", 80, 25, (g) => { g.GraphicsDeviceManager.HardwareModeSwitch = false; g.Window.AllowUserResizing = true; });
 
@@ -55,7 +59,8 @@ namespace DeenGames.EmanGems
             // We'll instead use our demo consoles that show various features of SadConsole.
             Global.CurrentScreen = new SadConsole.ScreenObject();
 
-            thisConsole = new SadConsole.Console(120, 50);    
+            // TODO: production size should be 120x50; a nice, modern size.
+            thisConsole = new PrototypeGameConsole(GameWidthInTiles, GameHeightInTiles);    
 
             // Initialize the windows
             Global.CurrentScreen.Children.Add(thisConsole);
@@ -63,7 +68,6 @@ namespace DeenGames.EmanGems
 
         private static void Update(GameTime time)
         {
-            thisConsole.FillWithRandomGarbage();
         }
     }
 }

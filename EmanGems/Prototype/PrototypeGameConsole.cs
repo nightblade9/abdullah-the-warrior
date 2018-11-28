@@ -58,6 +58,7 @@ namespace DeenGames.EmanGems.Prototype
                 {
                     if (x == 0 || y == 0 || x == this.Width - 1 || y == this.Height - 1)
                     {
+                        // TODO: we should probably cache Cell instances, I'm sure this will hit the GC hard.
                         this.SetCellAppearance(x, y, new Cell() { Background = Color.Black, Foreground = Color.Gray });
                         this.SetGlyph(x, y, '#');
                     }

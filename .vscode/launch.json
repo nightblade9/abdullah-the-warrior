@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/EmanGems/bin/Debug/netcoreapp2.1/EmanGems.dll",
+            "program": "${workspaceFolder}/AbdullahTheWarrior/bin/Debug/netcoreapp2.1/AbdullahTheWarrior.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/EmanGems",
+            "cwd": "${workspaceFolder}/AbdullahTheWarrior",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

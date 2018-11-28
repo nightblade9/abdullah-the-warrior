@@ -1,10 +1,10 @@
 using System;
-using DeenGames.EmanGems.Ecs;
+using DeenGames.AbdullahTheWarrior.Ecs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
-namespace DeenGames.EmanGems.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {

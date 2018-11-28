@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
-using DeenGames.EmanGems.Prototype;
+using DeenGames.AbdullahTheWarrior.Prototype;
 
-namespace DeenGames.EmanGems
+namespace DeenGames.AbdullahTheWarrior
 {
     public static class Program
     {

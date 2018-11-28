@@ -1,0 +1,22 @@
+- Setting
+	- Mom got kidnapped. GO GET HER BACK.
+		- COMBINE BOTH STORIES. Monster creature finally overran their defenses of the nearby tribe who have been fighting to keep it at bay
+		- It can talk! It demanded MOAR FOOD to not obliterate them.
+		- Hence, their tribe has been raiding and kidnapping women/children for fodder
+		- Halfway through the dungeon, you find the tribe leader, who says this. Right before a giant purple tenatcle grabs him and drags him down the stairs.
+	- Masjid is the home-base. Blacksmith, shops, etc. are here.
+- Name?
+	- Abdullah the Warrior
+- Enemies:
+		- Different types of raiders. Archers, magicians, etc.
+		- That thing IS LAYING EGGS. Different stages of the creature. eg. fire-breathing fast lizard vs. flying fat vampiric beast
+		- Enemies wind-up. Give you hints the next move is going to be + power-ups (eg. roar => 2x damage in a line)
+
+UX: Going against a horde and winning.
+
+THREE SEPARATE TREES. 
+	- Knight: multiple strikes, bow (multiple shots), high damage
+	- Hammerer: stuns and push-backs (eg. whirl skill)
+	- Samurai: skills that move you + area attacks
+		- eg. Z-strike that hits all tiles in a Z, moves you to the tail of the Z
+		- eg. flame-strike hits everything in a +-shaped area

@@ -1,13 +1,12 @@
 # Eman Gems
 
-A modern terminal C# roguelike/roguelite about family, feaith, the names of Allah, laying the smackdown on gobs of enemies, and really shiny gems. Made with .NET Core, GoRogue, and SadConsole.
+A modern terminal C# roguelike/roguelite. The target user experience is a single warrior battling overwhelming hordes to rescue his family.
 
 # Planned Features
 
-- A tower of 10+ floors to storm
-- A non-superfluous story about oppression, faith, and family
-- Fight groups of enemies, whirling, parrying, and pushing them back!
-- Calling on Allah, the One God, with different names (for different effects)
-- Powerful faith-based Eman Gems that boost equipment stats
-- Discover gems by using the right names at the right time
-- Combine similar gems to make stronger gems!
+- Customizable play with three distinct styles to mix-and-match
+- A gripping story about family, oppression, and monsters
+- Unique battles against hordes of enemies at once
+- Enemies with telegraphed moves that you can react to
+
+See: notes.txt for development notes.

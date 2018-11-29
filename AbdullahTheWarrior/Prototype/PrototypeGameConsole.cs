@@ -16,13 +16,20 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
 
+        private readonly int mapHeight;
+        private string latestMessage = "";
+
         public PrototypeGameConsole(int width, int height) : base(width, height)
         {
+            this.mapHeight = height - 1;
+
             player.X = width / 2;
-            player.Y = height / 3;
+            player.Y = mapHeight / 3;
 
             this.GenerateWalls();
             this.GenerateMonsters();
+
+            this.RedrawEverything();
         }
 
         private void GenerateWalls()
@@ -30,7 +37,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             for (var x = 0; x < this.Width; x++)
             {
                 this.walls.Add(new Vector2(x, 0));
-                this.walls.Add(new Vector2(x, this.Height - 1));
+                this.walls.Add(new Vector2(x, this.mapHeight - 1));
             }
 
             for (var y = 0; y < this.Height; y++)
@@ -48,14 +55,19 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         public override void Update(System.TimeSpan delta)
         {
-            this.ProcessPlayerInput();
-            this.RedrawEverything();
+            bool playerPressedKey = this.ProcessPlayerInput();
+            if (playerPressedKey)
+            {
+                this.RedrawEverything();
+            }
         }
 
-        private void ProcessPlayerInput()
-        {
+        private bool ProcessPlayerInput()
+        {            
             var destinationX = this.player.X;
             var destinationY = this.player.Y;
+            var processedInput = false;
+            this.latestMessage = "";
             
             if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)))
             {
@@ -79,19 +91,22 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 this.player.X = destinationX;
                 this.player.Y = destinationY;
+                processedInput = true;
             }
             else if (this.GetMonsterAt(destinationX, destinationY) != null)
             {
                 var monster = this.GetMonsterAt(destinationX, destinationY);
-                System.Console.WriteLine($"FIGHT: {monster.Character} {monster.CurrentHealth}/{monster.TotalHealth}");
+                processedInput = true;
+                this.latestMessage = $"FIGHT: {monster.Character} {monster.CurrentHealth}/{monster.TotalHealth}";
             }
-            
+
+            return processedInput;
         }
 
         private void RedrawEverything()
         {
             // One day, I will do better. One day, I will efficiently draw only what changed!
-            for (var y = 0; y < this.Height; y++)
+            for (var y = 0; y < this.mapHeight; y++)
             {
                 for (var x = 0; x < this.Width; x++)
                 {
@@ -110,6 +125,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
 
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
+
+            this.DrawBox(new Rectangle(0, this.Height - 1, this.Width, this.Height), new Cell(), new Cell());
+            this.Print(0, this.Height - 1, this.latestMessage);
         }
 
         private void GenerateMonsters()

@@ -10,20 +10,15 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     public class PrototypeGameConsole : SadConsole.Console
     {
         private readonly Color DarkGrey = Color.FromNonPremultiplied(64,64,64,255);
-        // Words cannot express my dismay. And amusement.
-        private readonly Monster player = new Monster('@', Color.White, 40, 5, 3);
+        private readonly Entity player = new Entity('@', Color.White, 40, 5, 3);
         private readonly Random random = new Random();
-        private readonly List<Monster> monsters = new List<Monster>();
+        private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
-
-        // TODO: use an entity with a position component
-        private int playerX = 0;
-        private int playerY = 0;
 
         public PrototypeGameConsole(int width, int height) : base(width, height)
         {
-            playerX = width / 2;
-            playerY = height / 3;
+            player.X = width / 2;
+            player.Y = height / 3;
 
             this.GenerateWalls();
             this.GenerateMonsters();
@@ -58,24 +53,24 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         private void ProcessPlayerInput()
         {
-            var destination = new Vector2(this.playerX, this.playerY);
+            var destination = new Vector2(this.player.X, this.player.Y);
             
-            if (Global.KeyboardState.IsKeyPressed(Keys.W) && IsWalkable(this.playerX, this.playerY - 1))
+            if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)) && IsWalkable(this.player.X, this.player.Y - 1))
             {
-                playerY -= 1;
+                player.Y -= 1;
             }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.S) && IsWalkable(this.playerX, this.playerY + 1))
+            else if ((Global.KeyboardState.IsKeyPressed(Keys.S) || Global.KeyboardState.IsKeyPressed(Keys.Down)) && IsWalkable(this.player.X, this.player.Y + 1))
             {
-                playerY += 1;
+                player.Y += 1;
             }
 
-            if (Global.KeyboardState.IsKeyPressed(Keys.A) && IsWalkable(this.playerX - 1, this.playerY))
+            if ((Global.KeyboardState.IsKeyPressed(Keys.A) || Global.KeyboardState.IsKeyPressed(Keys.Left)) && IsWalkable(this.player.X - 1, this.player.Y))
             {
-                playerX -= 1;
+                player.X -= 1;
             }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.D) && IsWalkable(this.playerX + 1, this.playerY))
+            else if ((Global.KeyboardState.IsKeyPressed(Keys.D) || Global.KeyboardState.IsKeyPressed(Keys.Right)) && IsWalkable(this.player.X + 1, this.player.Y))
             {
-                playerX += 1;
+                player.X += 1;
             }
         }
 
@@ -100,7 +95,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 this.DrawCharacter(monster.X, monster.Y, monster.Character, monster.Color);
             }
 
-            this.DrawCharacter(playerX, playerY, player.Character, player.Color);
+            this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
         }
 
         private void GenerateMonsters()
@@ -109,7 +104,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             while (this.monsters.Count < numMonsters)
             {
                 var spot = this.FindEmptySpot();
-                var monster = Monster.Create("Brigand");
+                var monster = Entity.CreateFromTemplate("Brigand");
                 monster.X = (int)spot.X;
                 monster.Y = (int)spot.Y;
                 this.monsters.Add(monster);
@@ -148,7 +143,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 }
             }
 
-            if (this.playerX == x && this.playerY == y)
+            if (this.player.X == x && this.player.Y == y)
             {
                 return false;
             }
@@ -163,41 +158,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             // TODO: we should probably cache Cell instances, I'm sure this will hit the GC hard.
             this.SetCellAppearance(intX, intY, new Cell() { Background = Color.Black, Foreground = color });
             this.SetGlyph(intX, intY, character);
-        }
-
-        private class Monster
-        {
-            public int CurrentHealth { get; }
-            public int TotalHealth { get; }
-            public int Strength { get; }
-            public int Defense { get; }
-            public Color Color { get; }
-            public char Character { get; }
-            public int X { get; set; }
-            public int Y { get; set; }
-
-            // This code makes me cry.
-            public static Monster Create(string name)
-            {
-                if (name == "Brigand")
-                {
-                    return new Monster('b', Color.Red, 20, 4, 1);
-                }
-                else
-                {
-                    throw new InvalidOperationException($"Not sure how to create a {name} monster");
-                }
-            }
-            
-            public Monster(char character, Color color, int health, int strength, int defense)
-            {
-                this.Character = character;
-                this.Color = color;
-                this.CurrentHealth = health;
-                this.TotalHealth = health;
-                this.Strength = strength;
-                this.Defense = defense;
-            }
         }
     }
 }

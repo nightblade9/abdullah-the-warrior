@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using DeenGames.AbdullahTheWarrior.Ecs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -53,25 +54,38 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         private void ProcessPlayerInput()
         {
-            var destination = new Vector2(this.player.X, this.player.Y);
+            var destinationX = this.player.X;
+            var destinationY = this.player.Y;
             
-            if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)) && IsWalkable(this.player.X, this.player.Y - 1))
+            if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)))
             {
-                player.Y -= 1;
+                destinationY -= 1;
             }
-            else if ((Global.KeyboardState.IsKeyPressed(Keys.S) || Global.KeyboardState.IsKeyPressed(Keys.Down)) && IsWalkable(this.player.X, this.player.Y + 1))
+            else if ((Global.KeyboardState.IsKeyPressed(Keys.S) || Global.KeyboardState.IsKeyPressed(Keys.Down)))
             {
-                player.Y += 1;
+                destinationY += 1;
             }
 
-            if ((Global.KeyboardState.IsKeyPressed(Keys.A) || Global.KeyboardState.IsKeyPressed(Keys.Left)) && IsWalkable(this.player.X - 1, this.player.Y))
+            if ((Global.KeyboardState.IsKeyPressed(Keys.A) || Global.KeyboardState.IsKeyPressed(Keys.Left)))
             {
-                player.X -= 1;
+                destinationX -= 1;
             }
-            else if ((Global.KeyboardState.IsKeyPressed(Keys.D) || Global.KeyboardState.IsKeyPressed(Keys.Right)) && IsWalkable(this.player.X + 1, this.player.Y))
+            else if ((Global.KeyboardState.IsKeyPressed(Keys.D) || Global.KeyboardState.IsKeyPressed(Keys.Right)))
             {
-                player.X += 1;
+                destinationX += 1;
             }
+            
+            if (this.IsWalkable(destinationX, destinationY))
+            {
+                this.player.X = destinationX;
+                this.player.Y = destinationY;
+            }
+            else if (this.GetMonsterAt(destinationX, destinationY) != null)
+            {
+                var monster = this.GetMonsterAt(destinationX, destinationY);
+                System.Console.WriteLine($"FIGHT: {monster.Character} {monster.CurrentHealth}/{monster.TotalHealth}");
+            }
+            
         }
 
         private void RedrawEverything()
@@ -125,22 +139,21 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             return new Vector2(targetX, targetY);
         }
 
+        private Entity GetMonsterAt(int x, int y)
+        {
+            return this.monsters.SingleOrDefault(m => m.X == x && m.Y == y);
+        }
+
         private bool IsWalkable(int x, int y)
         {
-            foreach (var wall in this.walls)
+            if (this.walls.Any(w => w.X == x && w.Y == y))
             {
-                if (wall.X == x && wall.Y == y)
-                {
-                    return false;
-                }
+                return false;
             }
 
-            foreach (var monster in this.monsters)
+            if (this.GetMonsterAt(x, y) != null)
             {
-                if (monster.X == x && monster.Y == y)
-                {
-                    return false;
-                }
+                return false;
             }
 
             if (this.player.X == x && this.player.Y == y)

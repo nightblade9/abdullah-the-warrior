@@ -30,6 +30,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.GenerateMonsters();
 
             this.RedrawEverything();
+
+            EventBus.Instance.AddListener("Death", (e) => this.monsters.Remove(e as Entity));
         }
 
         private void GenerateWalls()
@@ -97,7 +99,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 var monster = this.GetMonsterAt(destinationX, destinationY);
                 processedInput = true;
-                this.latestMessage = $"FIGHT: {monster.Character} {monster.CurrentHealth}/{monster.TotalHealth}";
+                var damage = AttackResolver.Attacks(player, monster);
+                this.latestMessage = $"You hit {monster.Character} for {damage} damage!";
             }
 
             return processedInput;

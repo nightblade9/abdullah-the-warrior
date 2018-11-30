@@ -8,7 +8,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     /// </summary>
     public class Entity
     {
-        public int CurrentHealth { get; }
+        public int CurrentHealth { get; private set; }
         public int TotalHealth { get; }
         public int Strength { get; }
         public int Defense { get; }
@@ -34,6 +34,21 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.TotalHealth = health;
             this.Strength = strength;
             this.Defense = defense;
+        }
+
+        public void Damage(int damage)
+        {
+            if (damage < 0) 
+            {
+                throw new InvalidOperationException($"Damage ({damage}) must be non-negative");
+            }
+
+            this.CurrentHealth -= damage;
+
+            if (this.CurrentHealth <= 0)
+            {
+                EventBus.Instance.Broadcast("Death", this);
+            }
         }
     }
 }

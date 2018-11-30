@@ -6,7 +6,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class EventBus
     {
-        private Dictionary<string, List<Action<object>>> eventListeners = new Dictionary<string, List<Action<object>>>();
+        private IDictionary<GameEvent, List<Action<object>>> eventListeners = new Dictionary<GameEvent, List<Action<object>>>();
 
         public static EventBus Instance { get; private set; } = new EventBus();
 
@@ -15,7 +15,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             EventBus.Instance = this;
         }
 
-        public void AddListener(string eventName, Action<object> listener)
+        public void AddListener(GameEvent eventName, Action<object> listener)
         {
             if (!this.eventListeners.ContainsKey(eventName))
             {
@@ -25,7 +25,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.eventListeners[eventName].Add(listener);
         }
 
-        public void Broadcast(string eventName, object data)
+        public void Broadcast(GameEvent eventName, object data)
         {
             if (this.eventListeners.ContainsKey(eventName))
             {
@@ -35,5 +35,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 }
             }
         }
+    }
+
+    public enum GameEvent
+    {
+        EntityDeath
     }
 }

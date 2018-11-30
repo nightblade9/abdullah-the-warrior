@@ -47,7 +47,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             if (this.CurrentHealth <= 0)
             {
-                EventBus.Instance.Broadcast("Death", this);
+                EventBus.Instance.Broadcast(GameEvent.EntityDeath, this);
             }
         }
     }

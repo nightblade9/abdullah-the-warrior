@@ -31,7 +31,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.RedrawEverything();
 
-            EventBus.Instance.AddListener("Death", (e) => this.monsters.Remove(e as Entity));
+            EventBus.Instance.AddListener(GameEvent.EntityDeath, (e) => this.monsters.Remove(e as Entity));
         }
 
         private void GenerateWalls()

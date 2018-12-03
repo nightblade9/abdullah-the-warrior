@@ -187,8 +187,26 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
 
-            this.DrawBox(new Rectangle(0, this.Height - 1, this.Width, this.Height), new Cell(), new Cell());
+            this.DrawBox(new Rectangle(0, this.Height - 2, this.Width, 2), new Cell(), new Cell());
+            this.DrawHealthIndicators();
             this.Print(0, this.Height - 1, this.latestMessage);
+        }
+
+        private void DrawHealthIndicators()
+        {
+            string message = $"You: {player.CurrentHealth}/{player.TotalHealth}";
+            
+            foreach (var monster in this.monsters)
+            {
+                var distance = Math.Sqrt(Math.Pow(monster.X - player.X, 2) + Math.Pow(monster.Y - player.Y, 2));
+                if (distance <= 1)
+                {
+                    // compact
+                    message = $"{message} {monster.Character}: {monster.CurrentHealth}/{monster.TotalHealth}"; 
+                }
+            }
+
+            this.Print(1, this.Height - 2, message);
         }
 
         private void GenerateMonsters()

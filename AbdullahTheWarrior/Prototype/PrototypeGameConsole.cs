@@ -11,7 +11,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     public class PrototypeGameConsole : SadConsole.Console
     {
         private readonly Color DarkGrey = Color.FromNonPremultiplied(64,64,64,255);
-        private readonly Entity player = new Entity("You", '@', Color.White, 40, 5, 3);
+        private readonly Entity player = new Entity("You", '@', Color.White, 40, 5, 3, 4);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -72,13 +72,45 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 var distance = Math.Sqrt(Math.Pow(player.X - monster.X, 2) + Math.Pow(player.Y - monster.Y, 2));
                 if (distance <= monster.VisionRange)
                 {
-                    // Process turn
+                    // Process turn.
+
                     if (distance <= 1)
                     {
+                        // ATTACK~!
                         var damage = AttackResolver.Attacks(monster, player);
                         this.latestMessage = $"{monster.Name} attacks for {damage} damage!";
                     }
+                    else
+                    {
+                        // Move closer. Naively. Randomly.
+                        var dx = player.X - monster.X;
+                        var dy = player.Y - monster.Y;
+                        var tryHorizontallyFirst = random.Next(0, 100) <= 50;
+                        if (tryHorizontallyFirst && dx != 0)
+                        {
+                            this.TryToMove(monster, monster.X + Math.Sign(dx), monster.Y);
+                        }
+                        else
+                        {
+                            this.TryToMove(monster, monster.X, monster.Y + Math.Sign(dy));
+                        }
+                    }
                 }
+            }
+        }
+
+        private bool TryToMove(Entity entity, int targetX, int targetY)
+        {
+            // Assuming targetX/targetY are adjacent, or entity can fly/teleport, etc.
+            if (this.IsWalkable(targetX, targetY))
+            {
+                entity.X = targetX;
+                entity.Y = targetY;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -106,10 +138,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 destinationX += 1;
             }
             
-            if (this.IsWalkable(destinationX, destinationY))
+            if (this.TryToMove(player, destinationX, destinationY))
             {
-                this.player.X = destinationX;
-                this.player.Y = destinationY;
                 processedInput = true;
                 this.latestMessage = "";
             }
@@ -136,7 +166,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 for (var x = 0; x < this.Width; x++)
                 {
-                    this.DrawCharacter(x, y, '.', DarkGrey);
+                    var colour = DarkGrey;
+                    if (Math.Sqrt(Math.Pow(x - this.player.X, 2) + Math.Pow(y - this.player.Y, 2)) <= this.player.VisionRange)
+                    {
+                        colour = Color.DarkGray; // not quite as dark
+                    }
+                    this.DrawCharacter(x, y, '.', colour);
                 }
             }
 

@@ -11,7 +11,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     public class PrototypeGameConsole : SadConsole.Console
     {
         private readonly Color DarkGrey = Color.FromNonPremultiplied(64,64,64,255);
-        private readonly Entity player = new Entity('@', Color.White, 40, 5, 3);
+        private readonly Entity player = new Entity("You", '@', Color.White, 40, 5, 3);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -61,6 +61,24 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             if (playerPressedKey)
             {
                 this.RedrawEverything();
+                this.ProcessMonsterTurns();
+            }
+        }
+
+        private void ProcessMonsterTurns()
+        {
+            foreach (var monster in this.monsters)
+            {
+                var distance = Math.Sqrt(Math.Pow(player.X - monster.X, 2) + Math.Pow(player.Y - monster.Y, 2));
+                if (distance <= monster.VisionRange)
+                {
+                    // Process turn
+                    if (distance <= 1)
+                    {
+                        var damage = AttackResolver.Attacks(monster, player);
+                        this.latestMessage = $"{monster.Name} attacks for {damage} damage!";
+                    }
+                }
             }
         }
 
@@ -69,7 +87,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             var destinationX = this.player.X;
             var destinationY = this.player.Y;
             var processedInput = false;
-            this.latestMessage = "";
             
             if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)))
             {
@@ -94,13 +111,19 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 this.player.X = destinationX;
                 this.player.Y = destinationY;
                 processedInput = true;
+                this.latestMessage = "";
             }
             else if (this.GetMonsterAt(destinationX, destinationY) != null)
             {
                 var monster = this.GetMonsterAt(destinationX, destinationY);
                 processedInput = true;
                 var damage = AttackResolver.Attacks(player, monster);
-                this.latestMessage = $"You hit {monster.Character} for {damage} damage!";
+                this.latestMessage = $"You hit {monster.Name} for {damage} damage!";
+            }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
+            {
+                // Skip turn
+                processedInput = true;
             }
 
             return processedInput;

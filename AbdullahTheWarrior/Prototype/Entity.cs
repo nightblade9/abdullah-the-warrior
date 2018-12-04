@@ -24,7 +24,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {
             // This code makes me cry.
             switch (name.ToLower()) {
-                case "brigand": return new Entity("Brigand", 'b', Color.Red, 20, 4, 1);
+                case "brigand": return new Entity("Brigand", 'b', Palette.Red, 20, 4, 1);
                 default: throw new InvalidOperationException($"Not sure how to create a {name} template entity");
             }
         }

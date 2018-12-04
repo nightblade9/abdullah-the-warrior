@@ -10,8 +10,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Color DarkGrey = Color.FromNonPremultiplied(64,64,64,255);
-        private readonly Entity player = new Entity("You", '@', Color.White, 40, 5, 3, 4);
+        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 4);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -21,7 +20,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         public PrototypeGameConsole(int width, int height) : base(width, height)
         {
-            this.mapHeight = height - 1;
+            this.mapHeight = height - 2;
 
             player.X = width / 2;
             player.Y = mapHeight / 3;
@@ -166,10 +165,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 for (var x = 0; x < this.Width; x++)
                 {
-                    var colour = DarkGrey;
-                    if (Math.Sqrt(Math.Pow(x - this.player.X, 2) + Math.Pow(y - this.player.Y, 2)) <= this.player.VisionRange)
+                    var colour = Palette.DarkGrey;
+                    if (IsInPlayerFov(x, y))
                     {
-                        colour = Color.DarkGray; // not quite as dark
+                        colour = Palette.LightGrey;
                     }
                     this.DrawCharacter(x, y, '.', colour);
                 }
@@ -177,19 +176,28 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             foreach (var wall in this.walls)
             {
-                this.DrawCharacter(wall.X, wall.Y, '#', Color.DarkGray);
+                var colour = Palette.DarkGrey;
+                if (IsInPlayerFov((int)wall.X, (int)wall.Y))
+                {
+                    colour = Palette.LightGrey;
+                }
+                this.DrawCharacter(wall.X, wall.Y, '#', colour);
             }
 
             foreach (var monster in this.monsters)
             {
-                this.DrawCharacter(monster.X, monster.Y, monster.Character, monster.Color);
+                if (IsInPlayerFov(monster.X, monster.Y))
+                {
+                    this.DrawCharacter(monster.X, monster.Y, monster.Character, monster.Color);
+                }
             }
 
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
 
-            this.DrawBox(new Rectangle(0, this.Height - 2, this.Width, 2), new Cell(), new Cell());
+            this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.DarkPurpleBrown, ' ');
+            this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.DarkPurpleBrown, ' ');
             this.DrawHealthIndicators();
-            this.Print(0, this.Height - 1, this.latestMessage);
+            this.Print(0, this.Height - 1, this.latestMessage, Palette.White);
         }
 
         private void DrawHealthIndicators()
@@ -206,7 +214,14 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 }
             }
 
-            this.Print(1, this.Height - 2, message);
+            this.Print(1, this.Height - 2, message, Palette.White);
+        }
+
+        private bool IsInPlayerFov(int x, int y)
+        {
+            // Doesn't use LoS calculations, just simple range check
+            var distance = Math.Sqrt(Math.Pow(player.X - x, 2) + Math.Pow(player.Y - y, 2));
+            return distance <= player.VisionRange;
         }
 
         private void GenerateMonsters()
@@ -266,7 +281,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             var intX = (int)x;
             var intY = (int)y;
             // TODO: we should probably cache Cell instances, I'm sure this will hit the GC hard.
-            this.SetCellAppearance(intX, intY, new Cell() { Background = Color.Black, Foreground = color });
+            this.SetCellAppearance(intX, intY, new Cell() { Background = Palette.DarkestBlue, Foreground = color });
             this.SetGlyph(intX, intY, character);
         }
     }

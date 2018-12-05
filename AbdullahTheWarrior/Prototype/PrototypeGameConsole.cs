@@ -10,10 +10,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 4);
+        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, 1);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
+        private int playerTurnsLeftUntilMonsterTurns = 0;
 
         private readonly int mapHeight;
         private string latestMessage = "";
@@ -21,9 +22,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         public PrototypeGameConsole(int width, int height) : base(width, height)
         {
             this.mapHeight = height - 2;
-
+            
             player.X = width / 2;
             player.Y = mapHeight / 3;
+            this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
 
             this.GenerateWalls();
             this.GenerateMonsters();
@@ -35,7 +37,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     this.latestMessage = "YOU DIE!!!";
                     this.player.Character = '%';
-                    this.player.Color = Palette.Red;
+                    this.player.Color = Palette.DarkBrownPurple;
                     this.RedrawEverything();
                 }
                 else
@@ -71,7 +73,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             bool playerPressedKey = this.ProcessPlayerInput();
             if (playerPressedKey)
             {
-                this.ProcessMonsterTurns();
+                this.playerTurnsLeftUntilMonsterTurns -= 1;
+                if (this.playerTurnsLeftUntilMonsterTurns <= 0)
+                {
+                    this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
+                    this.ProcessMonsterTurns();
+                }
                 this.RedrawEverything();
             }
         }

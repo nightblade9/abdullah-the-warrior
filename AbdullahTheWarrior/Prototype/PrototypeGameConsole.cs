@@ -10,7 +10,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, numberOfAttacks: 1);
+        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, numberOfAttacks: 2);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -166,18 +166,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 var monster = this.GetMonsterAt(destinationX, destinationY);
                 processedInput = true;
 
-                var totalDamage = 0;
-                int attacksLeft = player.NumberOfAttacks;
-                do
-                {
-                    attacksLeft -= 1;
-                    var damage = AttackResolver.Attacks(player, monster);
-                    totalDamage += damage;
-                } while (attacksLeft > 0);
+                var damage = AttackResolver.Attacks(player, monster);
 
                 var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
-                
-                this.latestMessage = $"You hit {monster.Name}{times} for {totalDamage} damage!";
+                this.latestMessage = $"You hit {monster.Name}{times} for {damage} damage!";
             }
             else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
             {

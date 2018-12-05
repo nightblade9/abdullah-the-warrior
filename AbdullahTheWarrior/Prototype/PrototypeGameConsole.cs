@@ -10,7 +10,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, 1);
+        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, numberOfAttacks: 1);
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -96,7 +96,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                     {
                         // ATTACK~!
                         var damage = AttackResolver.Attacks(monster, player);
-                        this.latestMessage = $"{monster.Name} attacks for {damage} damage!";
+                        this.latestMessage += $" {monster.Name} attacks for {damage} damage!";
                     }
                     else
                     {
@@ -165,8 +165,19 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 var monster = this.GetMonsterAt(destinationX, destinationY);
                 processedInput = true;
-                var damage = AttackResolver.Attacks(player, monster);
-                this.latestMessage = $"You hit {monster.Name} for {damage} damage!";
+
+                var totalDamage = 0;
+                int attacksLeft = player.NumberOfAttacks;
+                do
+                {
+                    attacksLeft -= 1;
+                    var damage = AttackResolver.Attacks(player, monster);
+                    totalDamage += damage;
+                } while (attacksLeft > 0);
+
+                var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
+                
+                this.latestMessage = $"You hit {monster.Name}{times} for {totalDamage} damage!";
             }
             else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
             {

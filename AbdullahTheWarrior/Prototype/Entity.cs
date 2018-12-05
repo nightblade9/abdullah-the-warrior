@@ -19,7 +19,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         public int Y { get; set; }
 
         public int VisionRange { get; }
-        public int NumberOfTurns { get; set; } = 1;
+        public int NumberOfTurns { get; } = 1;
+        public int NumberOfAttacks { get; } = 1;
 
         public static Entity CreateFromTemplate(string name)
         {
@@ -30,7 +31,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
         }
         
-        public Entity(string name, char character, Color color, int health, int strength, int defense, int visionRange = 5, int numberOfTurns = 1)
+        public Entity(string name, char character, Color color, int health, int strength, int defense, int visionRange = 5, int numberOfTurns = 1, int numberOfAttacks = 1)
         {
             this.Name = name;
             this.Character = character;
@@ -41,6 +42,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.Defense = defense;
             this.VisionRange = visionRange;
             this.NumberOfTurns = numberOfTurns;
+            this.NumberOfAttacks = numberOfAttacks;
         }
 
         public void Damage(int damage)

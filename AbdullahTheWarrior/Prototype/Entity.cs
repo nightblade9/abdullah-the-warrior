@@ -13,8 +13,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         public int TotalHealth { get; }
         public int Strength { get; }
         public int Defense { get; }
-        public Color Color { get; }
-        public char Character { get; }
+        public Color Color { get; set; }
+        public char Character { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
 

@@ -30,7 +30,19 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.RedrawEverything();
 
-            EventBus.Instance.AddListener(GameEvent.EntityDeath, (e) => this.monsters.Remove(e as Entity));
+            EventBus.Instance.AddListener(GameEvent.EntityDeath, (e) => {
+                if (e == player)
+                {
+                    this.latestMessage = "YOU DIE!!!";
+                    this.player.Character = '%';
+                    this.player.Color = Palette.Red;
+                    this.RedrawEverything();
+                }
+                else
+                {
+                    this.monsters.Remove(e as Entity);
+                }
+            });
         }
 
         private void GenerateWalls()
@@ -59,8 +71,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             bool playerPressedKey = this.ProcessPlayerInput();
             if (playerPressedKey)
             {
-                this.RedrawEverything();
                 this.ProcessMonsterTurns();
+                this.RedrawEverything();
             }
         }
 
@@ -153,6 +165,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 // Skip turn
                 processedInput = true;
+            }
+
+            if (player.CurrentHealth <= 0)
+            {
+                Environment.Exit(0);
             }
 
             return processedInput;

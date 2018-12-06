@@ -10,7 +10,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Entity player = new Entity("You", '@', Palette.White, 40, 5, 3, 6, numberOfAttacks: 2);
+        private readonly Entity player;
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -19,10 +19,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private readonly int mapHeight;
         private string latestMessage = "";
 
-        public PrototypeGameConsole(int width, int height) : base(width, height)
+        public PrototypeGameConsole(int width, int height,
+            int playerHealth, int playerStrength, int playerDefense, int playerVision = 6, int numberOfTurns = 1, int numberOfAttacks = 1) : base(width, height)
         {
             this.mapHeight = height - 2;
-            
+            this.player = new Entity("You", '@', Palette.White, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
             player.X = width / 2;
             player.Y = mapHeight / 3;
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;

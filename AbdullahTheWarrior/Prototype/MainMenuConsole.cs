@@ -37,8 +37,22 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         private void StartGameAs(string className)
         {
+            int playerHealth = 40;
+            int playerStrength = 5;
+            int playerDefense = 3;
+            int playerVision = 6;
+            int numTurns = 1;
+            int numAttacks = 1;
+
+            if (className.ToLower() == "faris")
+            {
+                playerStrength = 6;
+                numTurns = 2;
+                numAttacks = 2;
+            }
+            
             Global.CurrentScreen.Children.Clear();
-            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height));
+            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
         }
 
         private void ShowClassSelections()

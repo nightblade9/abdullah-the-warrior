@@ -60,11 +60,9 @@ namespace DeenGames.AbdullahTheWarrior
             // We'll instead use our demo consoles that show various features of SadConsole.
             Global.CurrentScreen = new SadConsole.ScreenObject();
 
-            // TODO: production size should be 120x50; a nice, modern size.
-            thisConsole = new PrototypeGameConsole(GameWidthInTiles, GameHeightInTiles);    
-
             // Initialize the windows
-            Global.CurrentScreen.Children.Add(thisConsole);
+            // Global.CurrentScreen.Children.Add(new PrototypeGameConsole(GameWidthInTiles, GameHeightInTiles));
+            Global.CurrentScreen.Children.Add(new MainMenuConsole(GameWidthInTiles, GameHeightInTiles));
         }
 
         private static void Update(GameTime time)

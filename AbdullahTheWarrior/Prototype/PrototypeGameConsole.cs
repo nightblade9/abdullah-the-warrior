@@ -179,7 +179,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             if (player.CurrentHealth <= 0)
             {
-                Environment.Exit(0);
+                Global.CurrentScreen.Children.Clear();
+                Global.CurrentScreen.Children.Add(new MainMenuConsole(this.Width, this.Height));
             }
 
             return processedInput;

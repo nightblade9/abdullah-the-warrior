@@ -68,10 +68,6 @@ namespace DeenGames.AbdullahTheWarrior
         private static void Update(GameTime time)
         {
             // Global updates. Be vevy vevy careful about adding things here. Only truely global stuff should go here.
-            if (Global.KeyboardState.IsKeyPressed(Keys.Escape) || Global.KeyboardState.IsKeyPressed(Keys.Q))
-            {
-                Environment.Exit(0);
-            }
         }
     }
 }

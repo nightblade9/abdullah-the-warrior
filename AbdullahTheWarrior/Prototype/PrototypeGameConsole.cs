@@ -17,16 +17,24 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private int playerTurnsLeftUntilMonsterTurns = 0;
 
         private readonly int mapHeight;
+
+        private readonly string playerClassName = "Faris";
         private string latestMessage = "";
 
-        public PrototypeGameConsole(int width, int height,
+        private BowManager bow;
+
+        public PrototypeGameConsole(int width, int height, string playerClassName,
             int playerHealth, int playerStrength, int playerDefense, int playerVision = 6, int numberOfTurns = 1, int numberOfAttacks = 1) : base(width, height)
         {
             this.mapHeight = height - 2;
+            this.playerClassName = playerClassName;
+
             this.player = new Entity("You", '@', Palette.White, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
             player.X = width / 2;
             player.Y = mapHeight / 3;
+
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
+            this.bow = new BowManager(this.player);
 
             this.GenerateWalls();
             this.GenerateMonsters();
@@ -72,15 +80,24 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         public override void Update(System.TimeSpan delta)
         {
             bool playerPressedKey = this.ProcessPlayerInput();
+
             if (playerPressedKey)
             {
-                this.playerTurnsLeftUntilMonsterTurns -= 1;
-                if (this.playerTurnsLeftUntilMonsterTurns <= 0)
-                {
-                    this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
-                    this.ProcessMonsterTurns();
-                }
-                this.RedrawEverything();
+                this.ConsumePlayerTurn();
+            } else if (this.bow.ProcessPlayerInput()) {
+                this.ConsumePlayerTurn();
+            }
+            
+            this.RedrawEverything();
+        }
+
+        private void ConsumePlayerTurn()
+        {
+            this.playerTurnsLeftUntilMonsterTurns -= 1;
+            if (this.playerTurnsLeftUntilMonsterTurns <= 0)
+            {
+                this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
+                this.ProcessMonsterTurns();
             }
         }
 
@@ -135,53 +152,86 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         private bool ProcessPlayerInput()
         {            
-            var destinationX = this.player.X;
-            var destinationY = this.player.Y;
             var processedInput = false;
-            
-            if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)))
-            {
-                destinationY -= 1;
-            }
-            else if ((Global.KeyboardState.IsKeyPressed(Keys.S) || Global.KeyboardState.IsKeyPressed(Keys.Down)))
-            {
-                destinationY += 1;
-            }
 
-            if ((Global.KeyboardState.IsKeyPressed(Keys.A) || Global.KeyboardState.IsKeyPressed(Keys.Left)))
+            if (!bow.IsActive)
             {
-                destinationX -= 1;
-            }
-            else if ((Global.KeyboardState.IsKeyPressed(Keys.D) || Global.KeyboardState.IsKeyPressed(Keys.Right)))
-            {
-                destinationX += 1;
-            }
-            
-            if (this.TryToMove(player, destinationX, destinationY))
-            {
-                processedInput = true;
-                this.latestMessage = "";
-            }
-            else if (this.GetMonsterAt(destinationX, destinationY) != null)
-            {
-                var monster = this.GetMonsterAt(destinationX, destinationY);
-                processedInput = true;
+                if (Global.KeyboardState.IsKeyPressed(Keys.Escape) || Global.KeyboardState.IsKeyPressed(Keys.Q))
+                {
+                    Environment.Exit(0);
+                }
+                
+                var destinationX = this.player.X;
+                var destinationY = this.player.Y;
+                
+                if ((Global.KeyboardState.IsKeyPressed(Keys.W) || Global.KeyboardState.IsKeyPressed(Keys.Up)))
+                {
+                    destinationY -= 1;
+                }
+                else if ((Global.KeyboardState.IsKeyPressed(Keys.S) || Global.KeyboardState.IsKeyPressed(Keys.Down)))
+                {
+                    destinationY += 1;
+                }
 
-                var damage = AttackResolver.Attacks(player, monster);
+                if ((Global.KeyboardState.IsKeyPressed(Keys.A) || Global.KeyboardState.IsKeyPressed(Keys.Left)))
+                {
+                    destinationX -= 1;
+                }
+                else if ((Global.KeyboardState.IsKeyPressed(Keys.D) || Global.KeyboardState.IsKeyPressed(Keys.Right)))
+                {
+                    destinationX += 1;
+                }
+                
+                if (this.TryToMove(player, destinationX, destinationY))
+                {
+                    processedInput = true;
+                    this.latestMessage = "";
+                }
+                else if (this.GetMonsterAt(destinationX, destinationY) != null)
+                {
+                    var monster = this.GetMonsterAt(destinationX, destinationY);
+                    processedInput = true;
 
-                var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
-                this.latestMessage = $"You hit {monster.Name}{times} for {damage} damage!";
-            }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
-            {
-                // Skip turn
-                processedInput = true;
-            }
+                    var damage = AttackResolver.Attacks(player, monster);
+                    var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
+                    this.latestMessage = $"You hit {monster.Name}{times} for {damage} damage!";
+                }
+                else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
+                {
+                    // Skip turn
+                    processedInput = true;
+                }
+                else if (playerClassName == "Faris" && Global.KeyboardState.IsKeyPressed(Keys.F))
+                {
+                    bow.Activate(this.monsters);
+                }
 
-            if (player.CurrentHealth <= 0)
+                if (player.CurrentHealth <= 0)
+                {
+                    Global.CurrentScreen.Children.Clear();
+                    Global.CurrentScreen.Children.Add(new MainMenuConsole(this.Width, this.Height));
+                }
+            }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.F))
             {
-                Global.CurrentScreen.Children.Clear();
-                Global.CurrentScreen.Children.Add(new MainMenuConsole(this.Width, this.Height));
+                if (bow.HasTarget)
+                {
+                    var damage = AttackResolver.Shoots(player, bow.Target);
+                    this.latestMessage = $"You shoot an arrow into {bow.Target.Name} afor {damage} damage!";
+                    if (bow.Target.CurrentHealth <= 0)
+                    {
+                        this.bow.Deactivate();
+                    }
+                    this.ConsumePlayerTurn();
+                }
+                else
+                {
+                    this.latestMessage = "No target.";
+                }
+            }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+            {
+                this.bow.Deactivate();
             }
 
             return processedInput;
@@ -223,6 +273,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
 
+            this.bow.Draw(this);
+
             this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.DarkPurpleBrown, ' ');
             this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.DarkPurpleBrown, ' ');
             this.DrawHealthIndicators();
@@ -236,7 +288,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             foreach (var monster in this.monsters)
             {
                 var distance = Math.Sqrt(Math.Pow(monster.X - player.X, 2) + Math.Pow(monster.Y - player.Y, 2));
-                if (distance <= 1)
+                if (distance <= 1 || bow.Target == monster)
                 {
                     // compact
                     message = $"{message} {monster.Character}: {monster.CurrentHealth}/{monster.TotalHealth}"; 
@@ -303,15 +355,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
 
             return true;
-        }
-
-        private void DrawCharacter(float x, float y, char character, Color color)
-        {
-            var intX = (int)x;
-            var intY = (int)y;
-            // TODO: we should probably cache Cell instances, I'm sure this will hit the GC hard.
-            this.SetCellAppearance(intX, intY, new Cell() { Background = Palette.DarkestBlue, Foreground = color });
-            this.SetGlyph(intX, intY, character);
         }
     }
 }

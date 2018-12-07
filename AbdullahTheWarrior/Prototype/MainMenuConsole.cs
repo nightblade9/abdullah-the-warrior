@@ -51,7 +51,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
             
             Global.CurrentScreen.Children.Clear();
-            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
+            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, className, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
         }
 
         private void ShowClassSelections()
@@ -61,7 +61,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             int startX = 8;
             int startY = this.Height / 2;
 
-            this.Print(startX, startY, "[A] Faris (multiple turns, multiple hits per attack)");
+            this.Print(startX, startY, "[A] Faris (bow, multiple turns, multiple hits per attack)");
         }
     }
 }

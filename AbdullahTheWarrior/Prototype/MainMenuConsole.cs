@@ -46,7 +46,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             if (className.ToLower() == "faris")
             {
-                playerStrength = 6;
                 numTurns = 2;
                 numAttacks = 2;
             }

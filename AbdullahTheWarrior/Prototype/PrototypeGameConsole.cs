@@ -212,6 +212,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                     Global.CurrentScreen.Children.Add(new MainMenuConsole(this.Width, this.Height));
                 }
             }
+            else if (Global.KeyboardState.IsKeyPressed(Keys.Tab))
+            {
+                bow.RotateTarget();
+            }
             else if (Global.KeyboardState.IsKeyPressed(Keys.F))
             {
                 if (bow.HasTarget)

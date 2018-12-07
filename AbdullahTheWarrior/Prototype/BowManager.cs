@@ -54,10 +54,35 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         public bool HasTarget { get { return this.Target != null; } }
 
-        private Entity FindClosestMonster()
+        public void RotateTarget()
         {
+            // Find a list of visible monsters
+            var visibleMonsters = new List<Entity>();
+
+            foreach (var monster in this.monsters)
+            {
+                var distance = Math.Sqrt(Math.Pow(monster.X - player.X, 2) + Math.Pow(monster.Y - player.Y, 2));
+                if (distance < player.VisionRange)
+                {
+                    visibleMonsters.Add(monster);
+                }
+            }
+
+            if (visibleMonsters.Any())
+            {
+                // Find current monster index
+                var currentIndex = visibleMonsters.IndexOf(this.Target);
+                
+                // Go to the next target
+                currentIndex = (currentIndex + 1) % visibleMonsters.Count;
+                this.Target = visibleMonsters[currentIndex];
+            }
+        }
+
+        private Entity FindClosestMonster()
+        {   
             Entity target = null;
-            var distance = double.MaxValue;
+            double distance = 999999;
 
             foreach (var monster in this.monsters)
             {

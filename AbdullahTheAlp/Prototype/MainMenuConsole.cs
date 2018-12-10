@@ -32,6 +32,10 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                 {
                     this.StartGameAs("Faris");
                 }
+                else if (Global.KeyboardState.IsKeyReleased(Keys.B))
+                {
+                    this.StartGameAs("Stunhammer");
+                }
             }
         }
 
@@ -50,6 +54,11 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                 numAttacks = 2;
                 playerStrength = 7;
             }
+            else if (className.ToLower() == "stunhammer")
+            {
+                playerDefense = 4;
+                playerHealth = 50;
+            }
             
             Global.CurrentScreen.Children.Clear();
             Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, className, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
@@ -63,6 +72,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             int startY = this.Height / 2;
 
             this.Print(startX, startY, "[A] Faris (bow, multiple turns, multiple hits per attack)");
+            this.Print(startX, startY + 1, "[B] Stunhammer (stuns and knocks back enemies)");
         }
     }
 }

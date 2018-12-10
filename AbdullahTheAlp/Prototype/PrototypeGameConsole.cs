@@ -106,7 +106,8 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             foreach (var monster in this.monsters)
             {
                 var distance = Math.Sqrt(Math.Pow(player.X - monster.X, 2) + Math.Pow(player.Y - monster.Y, 2));
-                if (distance <= monster.VisionRange)
+                // Monsters who you can see, or hurt monsters, attack.
+                if (distance <= monster.VisionRange || monster.CurrentHealth < monster.TotalHealth)
                 {
                     // Process turn.
 
@@ -268,7 +269,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             }
 
             foreach (var monster in this.monsters)
-            {
+            {                
                 if (IsInPlayerFov(monster.X, monster.Y))
                 {
                     this.DrawCharacter(monster.X, monster.Y, monster.Character, monster.Color);
@@ -311,7 +312,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         private void GenerateMonsters()
         {
-            var numMonsters = random.Next(60, 70);
+            var numMonsters = random.Next(80, 90);
             while (this.monsters.Count < numMonsters)
             {
                 var spot = this.FindEmptySpot();

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\AbdullahTheWarrior\AbdullahTheWarrior.csproj" />
+    <ProjectReference Include="..\AbdullahTheAlp\AbdullahTheAlp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

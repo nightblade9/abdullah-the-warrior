@@ -1,7 +1,7 @@
 using NUnit.Framework;
-using DeenGames.AbdullahTheWarrior.Ecs;
+using DeenGames.AbdullahTheAlp.Ecs;
 
-namespace DeenGames.AbdullahTheWarrior.Tests.Ecs
+namespace DeenGames.AbdullahTheAlp.Tests.Ecs
 {
     [TestFixture]
     public class EntityTests

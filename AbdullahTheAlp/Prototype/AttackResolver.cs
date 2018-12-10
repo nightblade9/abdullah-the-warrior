@@ -1,6 +1,6 @@
 using System;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheAlp.Prototype
 {
     public static class AttackResolver
     {

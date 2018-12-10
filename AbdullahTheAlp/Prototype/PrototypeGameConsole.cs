@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DeenGames.AbdullahTheWarrior.Ecs;
+using DeenGames.AbdullahTheAlp.Ecs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheAlp.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {

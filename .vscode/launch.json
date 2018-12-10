@@ -9,9 +9,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/AbdullahTheWarrior/bin/Debug/netcoreapp2.1/AbdullahTheWarrior.dll",
+            "program": "${workspaceFolder}/AbdullahTheAlp/bin/Debug/netcoreapp2.1/AbdullahTheAlp.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/AbdullahTheWarrior",
+            "cwd": "${workspaceFolder}/AbdullahTheAlp",
             "console": "internalConsole",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart"

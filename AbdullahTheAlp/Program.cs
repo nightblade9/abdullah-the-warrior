@@ -1,15 +1,13 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
-using DeenGames.AbdullahTheWarrior.Prototype;
+using DeenGames.AbdullahTheAlp.Prototype;
 using Microsoft.Xna.Framework.Input;
 
-namespace DeenGames.AbdullahTheWarrior
+namespace DeenGames.AbdullahTheAlp
 {
     public static class Program
     {
-        private static PrototypeGameConsole thisConsole;
-
         // TODO: for production, use 120x50, it's a nice, modern size.
         private const int GameWidthInTiles = 80;
         private const int GameHeightInTiles = 34;

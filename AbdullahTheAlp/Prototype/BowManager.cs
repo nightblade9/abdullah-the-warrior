@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheAlp.Prototype
 {
     /// <summary>
     /// Small little class to handle bow drawing/input/etc.

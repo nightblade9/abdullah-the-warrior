@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-using DeenGames.AbdullahTheWarrior.Ecs;
+using DeenGames.AbdullahTheAlp.Ecs;
 
-namespace DeenGames.AbdullahTheWarrior.Ecs
+namespace DeenGames.AbdullahTheAlp.Ecs
 {
     /// <summary>
     /// Just a simple collection of entities. You can't have dupes, though.

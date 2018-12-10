@@ -22,7 +22,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         public static int Shoots(Entity attacker, Entity defender)
         {
-            var damage = Math.Max(attacker.Strength - defender.Defense, 0);
+            var damage = Math.Max((int)Math.Floor(attacker.Strength * 0.8f) - defender.Defense, 0);
             defender.Damage(damage);            
             return damage;
         }

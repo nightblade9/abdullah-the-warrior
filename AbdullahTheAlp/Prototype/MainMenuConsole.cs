@@ -48,6 +48,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             {
                 numTurns = 2;
                 numAttacks = 2;
+                playerStrength = 7;
             }
             
             Global.CurrentScreen.Children.Clear();

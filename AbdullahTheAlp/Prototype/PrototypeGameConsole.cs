@@ -311,7 +311,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         private void GenerateMonsters()
         {
-            var numMonsters = random.Next(10, 15);
+            var numMonsters = random.Next(60, 70);
             while (this.monsters.Count < numMonsters)
             {
                 var spot = this.FindEmptySpot();

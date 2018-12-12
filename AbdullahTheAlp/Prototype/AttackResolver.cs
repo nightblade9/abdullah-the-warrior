@@ -4,6 +4,8 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 {
     public static class AttackResolver
     {
+        private static Random random = new Random();
+
         public static int Attacks(Entity attacker, Entity defender)
         {
             var totalDamage = 0;
@@ -23,7 +25,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                 var player = attacker as Player;
                 if (player.Specialization == Specialization.Stunhammer)
                 {
-                    Console.WriteLine("HULK SMASH!");
+                    TryToStun(player, defender);
                 }
             }
 
@@ -35,6 +37,14 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             var damage = Math.Max((int)Math.Floor(attacker.Strength * 0.8f) - defender.Defense, 0);
             defender.Damage(damage);            
             return damage;
+        }
+
+        private static void TryToStun(Player player, Entity monster)
+        {
+            if (random.Next(100) <= Player.StunProbability)
+            {
+                monster.Stun(Player.StunTurns);
+            }
         }
     }
 }

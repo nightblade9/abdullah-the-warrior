@@ -21,6 +21,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
         public int VisionRange { get; }
         public int NumberOfTurns { get; } = 1;
         public int NumberOfAttacks { get; } = 1;
+        public int TurnsStunned { get; private set; }
 
         public static Entity CreateFromTemplate(string name)
         {
@@ -59,5 +60,18 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                 EventBus.Instance.Broadcast(GameEvent.EntityDeath, this);
             }
         }
+
+        public void TakeTurn()
+        {
+            // Placeholder
+            this.TurnsStunned -= 1;
+        }
+
+        public void Stun(int turns)
+        {
+            this.TurnsStunned += turns;
+        }
+
+        public bool IsStunned { get { return this.TurnsStunned > 0; } }
     }
 }

@@ -102,12 +102,14 @@ namespace DeenGames.AbdullahTheAlp.Prototype
         {
             foreach (var monster in this.monsters)
             {
+                monster.TakeTurn(); // Decrement stun
+                
                 var distance = Math.Sqrt(Math.Pow(player.X - monster.X, 2) + Math.Pow(player.Y - monster.Y, 2));
+
                 // Monsters who you can see, or hurt monsters, attack.
-                if (distance <= monster.VisionRange || monster.CurrentHealth < monster.TotalHealth)
+                if (!monster.IsStunned && (distance <= monster.VisionRange || monster.CurrentHealth < monster.TotalHealth))
                 {
                     // Process turn.
-
                     if (distance <= 1)
                     {
                         // ATTACK~!
@@ -269,7 +271,20 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             {                
                 if (IsInPlayerFov(monster.X, monster.Y))
                 {
-                    this.DrawCharacter(monster.X, monster.Y, monster.Character, monster.Color);
+                    var character = monster.Character;
+                    if (monster.IsStunned)
+                    {
+                        // If stunned, number of turns stunned. If TOO MANY (like 12), return the last digit (2)
+                        if (monster.TurnsStunned >= 10)
+                        {
+                            character = '9';
+                        }
+                        else
+                        {
+                            character = monster.TurnsStunned.ToString().Single();
+                        }
+                    }
+                    this.DrawCharacter(monster.X, monster.Y, character, monster.Color);
                 }
             }
 

@@ -10,7 +10,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        private readonly Entity player;
+        private readonly Player player;
         private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
@@ -18,7 +18,6 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         private readonly int mapHeight;
 
-        private readonly string playerClassName = "Faris";
         private string latestMessage = "";
 
         private BowManager bow;
@@ -27,9 +26,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             int playerHealth, int playerStrength, int playerDefense, int playerVision = 6, int numberOfTurns = 1, int numberOfAttacks = 1) : base(width, height)
         {
             this.mapHeight = height - 2;
-            this.playerClassName = playerClassName;
-
-            this.player = new Entity("You", '@', Palette.White, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
+            this.player = new Player(playerClassName, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
             player.X = width / 2;
             player.Y = mapHeight / 3;
 
@@ -114,7 +111,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                     if (distance <= 1)
                     {
                         // ATTACK~!
-                        var damage = AttackResolver.Attacks(monster, player);
+                        var damage = AttackResolver.Attacks(monster, player);                        
                         this.latestMessage += $" {monster.Name} attacks for {damage} damage!";
                     }
                     else
@@ -202,7 +199,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                     // Skip turn
                     processedInput = true;
                 }
-                else if (playerClassName == "Faris" && Global.KeyboardState.IsKeyPressed(Keys.F))
+                else if (player.ClassName == "Faris" && Global.KeyboardState.IsKeyPressed(Keys.F))
                 {
                     bow.Activate(this.monsters);
                 }

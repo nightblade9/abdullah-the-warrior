@@ -17,6 +17,12 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             } while (attacksLeft > 0);
 
             defender.Damage(totalDamage);
+
+            if (attacker is Player)
+            {
+                Console.WriteLine("HULK SMASH!");
+            }
+
             return totalDamage;
         }
 

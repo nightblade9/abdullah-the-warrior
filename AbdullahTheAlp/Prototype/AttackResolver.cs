@@ -20,7 +20,11 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
             if (attacker is Player)
             {
-                Console.WriteLine("HULK SMASH!");
+                var player = attacker as Player;
+                if (player.Specialization == Specialization.Stunhammer)
+                {
+                    Console.WriteLine("HULK SMASH!");
+                }
             }
 
             return totalDamage;

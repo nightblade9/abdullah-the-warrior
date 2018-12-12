@@ -22,11 +22,11 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         private BowManager bow;
 
-        public PrototypeGameConsole(int width, int height, string playerClassName,
+        public PrototypeGameConsole(int width, int height, Specialization specialization,
             int playerHealth, int playerStrength, int playerDefense, int playerVision = 6, int numberOfTurns = 1, int numberOfAttacks = 1) : base(width, height)
         {
             this.mapHeight = height - 2;
-            this.player = new Player(playerClassName, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
+            this.player = new Player(specialization, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
             player.X = width / 2;
             player.Y = mapHeight / 3;
 
@@ -199,7 +199,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                     // Skip turn
                     processedInput = true;
                 }
-                else if (player.ClassName == "Faris" && Global.KeyboardState.IsKeyPressed(Keys.F))
+                else if (player.Specialization == Specialization.Faris && Global.KeyboardState.IsKeyPressed(Keys.F))
                 {
                     bow.Activate(this.monsters);
                 }

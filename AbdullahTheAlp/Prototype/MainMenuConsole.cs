@@ -24,22 +24,22 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             if (!isSelectingClass && Global.KeyboardState.IsKeyReleased(Keys.N))
             {
                 this.isSelectingClass = true;
-                this.ShowClassSelections();
+                this.ShowSpecializationSelections();
             }
             else if (isSelectingClass && Global.KeyboardState.KeysReleased.Any())
             {
                 if (Global.KeyboardState.IsKeyReleased(Keys.A))
                 {
-                    this.StartGameAs("Faris");
+                    this.StartGameAs(Specialization.Faris);
                 }
                 else if (Global.KeyboardState.IsKeyReleased(Keys.B))
                 {
-                    this.StartGameAs("Stunhammer");
+                    this.StartGameAs(Specialization.Stunhammer);
                 }
             }
         }
 
-        private void StartGameAs(string className)
+        private void StartGameAs(Specialization specialization)
         {
             int playerHealth = 40;
             int playerStrength = 5;
@@ -48,23 +48,23 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             int numTurns = 1;
             int numAttacks = 1;
 
-            if (className.ToLower() == "faris")
+            if (specialization == Specialization.Faris)
             {
                 numTurns = 2;
                 numAttacks = 2;
                 playerStrength = 7;
             }
-            else if (className.ToLower() == "stunhammer")
+            else if (specialization == Specialization.Stunhammer)
             {
                 playerDefense = 4;
                 playerHealth = 50;
             }
             
             Global.CurrentScreen.Children.Clear();
-            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, className, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
+            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, specialization, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
         }
 
-        private void ShowClassSelections()
+        private void ShowSpecializationSelections()
         {
             this.Clear();
 

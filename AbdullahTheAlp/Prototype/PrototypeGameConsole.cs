@@ -194,6 +194,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
                     var damage = AttackResolver.Attacks(player, monster);
                     var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
+                    AttackResolver.ApplyKnockbacks(player, monster, this.monsters, damage);
                     this.latestMessage = $"You hit {monster.Name}{times} for {damage} damage!";
                 }
                 else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
@@ -285,6 +286,10 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                         }
                     }
                     this.DrawCharacter(monster.X, monster.Y, character, monster.Color);
+                    // DEBUGGING HACK
+                    if (monster.CurrentHealth < monster.TotalHealth) {
+                        this.DrawCharacter(monster.X, monster.Y, character, Palette.Gold);
+                    }
                 }
             }
 

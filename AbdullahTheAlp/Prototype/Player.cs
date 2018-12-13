@@ -4,7 +4,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 {
     public class Player : Entity
     {
-        public static readonly int StunProbability = 50; // 53 = 30%
+        public static readonly int StunProbability = 50; // 30 = 30%
         public static readonly int StunTurns = 3;
 
         public Specialization Specialization { get; private set; }

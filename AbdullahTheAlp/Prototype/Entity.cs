@@ -63,8 +63,9 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         public void TakeTurn()
         {
-            // Placeholder
-            this.TurnsStunned -= 1;
+            if (this.TurnsStunned > 0) {
+                this.TurnsStunned -= 1;
+            }
         }
 
         public void Stun(int turns)

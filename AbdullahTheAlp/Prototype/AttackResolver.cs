@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace DeenGames.AbdullahTheAlp.Prototype
 {
@@ -41,7 +42,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
             return damage;
         }
 
-        public static void ApplyKnockbacks(Player player, Entity monster, List<Entity> monsters, int damage)
+        public static void ApplyKnockbacks(Player player, Entity monster, IList<Entity> monsters, IList<Vector2> walls, int damage)
         {
             if (player.Specialization == Specialization.Stunhammer && random.Next(0, 100) <= Player.KnockBackProbability)
             {
@@ -53,24 +54,28 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                 int stopX = startX + Player.KnockBackDistance * Math.Sign(dx);
                 int stopY = startY + Player.KnockBackDistance * Math.Sign(dy);
 
-                if (dy == 0) {
-                    // Horizontal knockback
-                    var direction = Math.Sign(dx);
-                    monster.X += (direction * Player.KnockBackDistance);
-                } else {
-                    // Vertical knockback
-                    var direction = Math.Sign(dy);
-                    monster.Y += (direction * Player.KnockBackDistance);                    
-                }
-                
-                // Secondary knockback is orthagonal to the primary one (random direction)
-
                 // Horrible method but iterates in one direction only, guaranteed
                 var minX = Math.Min(startX, stopX);
                 var maxX = Math.Max(startX, stopX);
                 var minY = Math.Min(startY, stopY);
                 var maxY = Math.Max(startY, stopY);
+
+                // Move monster if spaces are clear
+                for (var y = minY; y <= maxY; y++) {
+                    for (var x = minX; x <= maxX; x++) {
+                        // Primary knockback was vertical, go horizontal. Check all spaces and move the player one by one if the space is empty.
+                        if (!monsters.Any(m => m.X == x && m.Y == y && m != monster) && !walls.Any(w => w.X == x && w.Y == y))
+                        {
+                            // One of these is zero so we're really just moving in one direction.
+                            monster.X += dx;                            
+                            monster.Y += dy;
+                        }
+                    }
+                }
+
+                // Secondary knockback is orthagonal to the primary one (random direction)
                 int secondaryDamage = (int)Math.Ceiling(damage * Player.SecondaryKnockbackDamageRatio);
+
                 for (var y = minY; y <= maxY; y++) {
                     for (var x = minX; x <= maxX; x++) {
                         var target = monsters.SingleOrDefault(m => m.X == x && m.Y == y && m != monster);
@@ -78,11 +83,19 @@ namespace DeenGames.AbdullahTheAlp.Prototype
                             // Secondary knockback
                             var sign = random.Next(100) <= 50 ? -Player.SecondaryKnockbackDistance : Player.SecondaryKnockbackDistance;
                             if (dx == 0) {
-                                // Primary knockback was vertical, go horizontal
-                                target.X += sign;
+                                // Primary knockback was vertical, go horizontal. Check all spaces and move the player one by one if the space is empty.
+                                for (var i = Math.Min(target.X, target.X + sign); i < target.X + sign; i++) {
+                                    if (!monsters.Any(m => m.X == i && m.Y == target.Y && m != target) && !walls.Any(w => w.X == x && w.Y == target.Y)) {
+                                        target.X += Math.Sign(sign);
+                                    }
+                                }
                             } else {
                                 // Primary was horizontal, go vertical
-                                target.Y += sign;
+                                for (var i = Math.Min(target.Y, target.Y + sign); i < target.Y + sign; i++) {
+                                    if (!monsters.Any(m => m.X == target.X && m.Y == i && m != target) && !walls.Any(w => w.X == target.X && w.Y == i)) {
+                                        target.Y += Math.Sign(sign);
+                                    }
+                                }
                             }
                         }
                     }

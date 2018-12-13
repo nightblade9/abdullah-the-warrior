@@ -194,7 +194,7 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
                     var damage = AttackResolver.Attacks(player, monster);
                     var times = player.NumberOfAttacks <= 1 ? "" : $" {player.NumberOfAttacks}x";
-                    AttackResolver.ApplyKnockbacks(player, monster, this.monsters, damage);
+                    AttackResolver.ApplyKnockbacks(player, monster, this.monsters, this.walls, damage);
                     this.latestMessage = $"You hit {monster.Name}{times} for {damage} damage!";
                 }
                 else if (Global.KeyboardState.IsKeyPressed(Keys.OemPeriod) || Global.KeyboardState.IsKeyPressed(Keys.Space))
@@ -356,7 +356,8 @@ namespace DeenGames.AbdullahTheAlp.Prototype
 
         private Entity GetMonsterAt(int x, int y)
         {
-            return this.monsters.SingleOrDefault(m => m.X == x && m.Y == y);
+            // BUG: (secondary?) knockback causes two monsters to occupy the same space!!!
+            return this.monsters.FirstOrDefault(m => m.X == x && m.Y == y);
         }
 
         private bool IsWalkable(int x, int y)

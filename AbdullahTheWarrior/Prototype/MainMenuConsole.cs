@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DeenGames.AbdullahTheAlp.Ecs;
+using DeenGames.AbdullahTheWarrior.Ecs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
-namespace DeenGames.AbdullahTheAlp.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class MainMenuConsole : SadConsole.Console
     {

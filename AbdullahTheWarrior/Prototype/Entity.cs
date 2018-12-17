@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace DeenGames.AbdullahTheAlp.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     /// <summary>
     /// A living, breathing entity; NOT an ECS entity.

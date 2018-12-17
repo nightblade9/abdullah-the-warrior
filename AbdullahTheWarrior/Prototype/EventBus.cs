@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace DeenGames.AbdullahTheAlp.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     public class EventBus
     {

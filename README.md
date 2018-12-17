@@ -1,4 +1,4 @@
-# Abdullah the Alp
+# Abdullah the Warrior
 
 A modern terminal C# roguelike/roguelite. The target user experience is a single warrior battling overwhelming hordes to rescue his family.
 

@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
-using DeenGames.AbdullahTheAlp.Prototype;
+using DeenGames.AbdullahTheWarrior.Prototype;
 using Microsoft.Xna.Framework.Input;
 
-namespace DeenGames.AbdullahTheAlp
+namespace DeenGames.AbdullahTheWarrior
 {
     public static class Program
     {

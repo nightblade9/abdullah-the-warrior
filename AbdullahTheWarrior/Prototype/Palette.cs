@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace DeenGames.AbdullahTheAlp.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototype
 {
     // Values from Fleja palette: https://lospec.com/palette-list/fleja-master-palette
     public static class Palette

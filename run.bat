@@ -1,1 +1,1 @@
-dotnet run --project AbdullahTheAlp 
+dotnet run --project AbdullahTheWarrior 

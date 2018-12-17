@@ -1,1 +1,1 @@
-dotnet test AbdullahTheAlp.Tests 
+dotnet test AbdullahTheWarrior.Tests 

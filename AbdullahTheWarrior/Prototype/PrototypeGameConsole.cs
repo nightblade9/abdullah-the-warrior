@@ -5,6 +5,7 @@ using DeenGames.AbdullahTheWarrior.Ecs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
+using GoRogue.MapViews;
 
 namespace DeenGames.AbdullahTheWarrior.Prototype
 {
@@ -27,14 +28,16 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {
             this.mapHeight = height - 2;
             this.player = new Player(specialization, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
-            player.X = width / 2;
-            player.Y = mapHeight / 3;
 
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
             this.bow = new BowManager(this.player);
 
             this.GenerateWalls();
             this.GenerateMonsters();
+
+            var emptySpot = this.FindEmptySpot();
+            player.X = (int)emptySpot.X;
+            player.Y = (int)emptySpot.Y;
 
             this.RedrawEverything();
 
@@ -55,21 +58,14 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
         private void GenerateWalls()
         {
-            for (var x = 0; x < this.Width; x++)
-            {
-                this.walls.Add(new Vector2(x, 0));
-                this.walls.Add(new Vector2(x, this.mapHeight - 1));
-            }
-
-            for (var y = 0; y < this.Height; y++)
-            {
-                this.walls.Add(new Vector2(0, y));
-                this.walls.Add(new Vector2(this.Width - 1, y));
-            }
-
-            for (var y = 15; y <= 20; y++) {
-                for (var x = 35; x <= 45; x++) {
-                    this.walls.Add(new Vector2(x, y));
+            var map = new ArrayMap<bool>(this.Width, this.mapHeight);
+            GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map);
+            
+            for (var y = 0; y < this.mapHeight; y++) {
+                for (var x = 0; x < this.Width; x++) {
+                    if (map[x, y] == true) {
+                        this.walls.Add(new Vector2(x, y));
+                    }
                 }
             }
         }

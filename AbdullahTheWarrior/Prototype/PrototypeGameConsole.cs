@@ -22,6 +22,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private string latestMessage = "";
 
         private BowManager bow;
+        private SwordSkillsManager swordSkillsManager;
 
         public PrototypeGameConsole(int width, int height, Specialization specialization,
             int playerHealth, int playerStrength, int playerDefense, int playerVision = 6, int numberOfTurns = 1, int numberOfAttacks = 1) : base(width, height)
@@ -31,6 +32,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
             this.bow = new BowManager(this.player);
+            this.swordSkillsManager = new SwordSkillsManager(this.player);
 
             this.GenerateWalls();
             this.GenerateMonsters();
@@ -200,6 +202,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     bow.Activate(this.monsters);
                 }
+                else if (player.Specialization == Specialization.Ghazi && Global.KeyboardState.IsKeyPressed(Keys.G))
+                {
+                    swordSkillsManager.Activate();
+                }
 
                 if (player.CurrentHealth <= 0)
                 {
@@ -290,6 +296,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
 
             this.bow.Draw(this);
+            this.swordSkillsManager.Draw(this);
 
             this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.DarkPurpleBrown, ' ');
             this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.DarkPurpleBrown, ' ');

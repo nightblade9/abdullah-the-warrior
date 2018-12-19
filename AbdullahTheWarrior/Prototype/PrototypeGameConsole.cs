@@ -77,8 +77,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             if (playerPressedKey)
             {
                 this.ConsumePlayerTurn();
-            } else if (this.bow.ProcessPlayerInput()) {
-                this.ConsumePlayerTurn();
             }
             
             this.RedrawEverything();

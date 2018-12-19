@@ -33,12 +33,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.Target = null;
         }
 
-        // Return true if player took a turn
-        public bool ProcessPlayerInput()
-        {
-            return false;
-        }
-
         public void Draw(SadConsole.Console console)
         {
             if (!this.IsActive)

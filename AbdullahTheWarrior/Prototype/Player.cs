@@ -22,6 +22,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
     public enum Specialization {
         Faris,
-        Stunhammer
+        Stunhammer,
+        Ghazi
     }
 }

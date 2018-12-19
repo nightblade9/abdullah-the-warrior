@@ -36,6 +36,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     this.StartGameAs(Specialization.Stunhammer);
                 }
+                else if (Global.KeyboardState.IsKeyReleased(Keys.C))
+                {
+                    this.StartGameAs(Specialization.Ghazi);
+                }
             }
         }
 
@@ -59,6 +63,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 playerDefense = 4;
                 playerHealth = 50;
             }
+            else if (specialization == Specialization.Ghazi)
+            {
+                playerHealth = 45;
+                playerStrength = 6;
+                playerVision = 7;
+            }
             
             Global.CurrentScreen.Children.Clear();
             Global.CurrentScreen.Children.Add(new PrototypeGameConsole(this.Width, this.Height, specialization, playerHealth, playerStrength, playerDefense, playerVision, numTurns, numAttacks));
@@ -73,6 +83,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.Print(startX, startY, "[A] Faris (bow, multiple turns, multiple hits per attack)");
             this.Print(startX, startY + 1, "[B] Stunhammer (stuns and knocks back enemies)");
+            this.Print(startX, startY + 2, "[C] Ghazi (moves across the map during attacks)");
         }
     }
 }

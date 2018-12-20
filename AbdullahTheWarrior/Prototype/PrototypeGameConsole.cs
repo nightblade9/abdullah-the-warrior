@@ -80,7 +80,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             {
                 this.ConsumePlayerTurn();
             }
-            
+
+            // TODO: override Draw and put this in there. And all the infrastructure that requires.
+            // Eg. Program.cs must call Draw on the console; and, changing consoles should work.
             this.RedrawEverything();
         }
 
@@ -150,7 +152,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {            
             var processedInput = false;
 
-            if (!bow.IsActive)
+            if (!bow.IsActive && !swordSkillsManager.IsActive)
             {
                 if (Global.KeyboardState.IsKeyPressed(Keys.Escape) || Global.KeyboardState.IsKeyPressed(Keys.Q))
                 {
@@ -213,30 +215,45 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                     Global.CurrentScreen.Children.Add(new MainMenuConsole(this.Width, this.Height));
                 }
             }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.Tab))
+            else if (bow.IsActive)
             {
-                bow.RotateTarget();
-            }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.F))
-            {
-                if (bow.HasTarget)
+                if (Global.KeyboardState.IsKeyPressed(Keys.Tab))
                 {
-                    var damage = AttackResolver.Shoots(player, bow.Target);
-                    this.latestMessage = $"You shoot an arrow into {bow.Target.Name} afor {damage} damage!";
-                    if (bow.Target.CurrentHealth <= 0)
+                    bow.RotateTarget();
+                }
+                else if (Global.KeyboardState.IsKeyPressed(Keys.F))
+                {
+                    if (bow.HasTarget)
                     {
-                        this.bow.Deactivate();
+                        var damage = AttackResolver.Shoots(player, bow.Target);
+                        this.latestMessage = $"You shoot an arrow into {bow.Target.Name} afor {damage} damage!";
+                        if (bow.Target.CurrentHealth <= 0)
+                        {
+                            this.bow.Deactivate();
+                        }
+                        this.ConsumePlayerTurn();
                     }
-                    this.ConsumePlayerTurn();
+                    else
+                    {
+                        this.latestMessage = "No target.";
+                    }
                 }
-                else
+                else if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
                 {
-                    this.latestMessage = "No target.";
+                    this.bow.Deactivate();
                 }
             }
-            else if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+            else if (swordSkillsManager.IsActive)
             {
-                this.bow.Deactivate();
+                if (swordSkillsManager.IsActive)
+                {
+                    swordSkillsManager.ProcessPlayerInput();
+
+                    if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+                    {
+                        this.swordSkillsManager.Deactivate();
+                    }
+                }
             }
 
             return processedInput;
@@ -349,7 +366,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             do 
             {
                 targetX = random.Next(0, this.Width);
-                targetY = random.Next(0, this.Height);
+                targetY = random.Next(0, this.mapHeight);
             } while (!this.IsWalkable(targetX, targetY));
 
             return new Vector2(targetX, targetY);

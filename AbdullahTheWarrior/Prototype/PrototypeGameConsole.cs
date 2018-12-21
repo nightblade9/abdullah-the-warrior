@@ -32,7 +32,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
             this.bow = new BowManager(this.player);
-            this.swordSkillsManager = new SwordSkillsManager(this.player);
+            this.swordSkillsManager = new SwordSkillsManager(this.player, this.monsters, this.walls);
 
             this.GenerateWalls();
             this.GenerateMonsters();
@@ -256,6 +256,24 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                     else if (Global.KeyboardState.IsKeyPressed(Keys.G))
                     {
                         var affectedCells = this.swordSkillsManager.GetSkillTiles();
+                        foreach (var cell in affectedCells)
+                        {
+                            if (this.walls.Any(w => w.X == cell.Item1 && w.Y == cell.Item2))
+                            {
+                                // We hit a wall. Stop now.
+                                break;
+                            } else {
+                                var monster = this.monsters.SingleOrDefault(m => m.X == cell.Item1 && m.Y == cell.Item2);
+                                if (monster != null) {
+                                    // HURT MONSTER.
+                                    monster.Damage(swordSkillsManager.GetCurrentSkillDamage());
+                                } else {
+                                    // Blank tile. Move plz.
+                                    player.X = cell.Item1;
+                                    player.Y = cell.Item2;                                
+                                }
+                            }
+                        }
                     }
                 }
             }

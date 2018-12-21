@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
@@ -21,17 +22,23 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         /// </summary>
         private Dictionary<Skill, List<int>> SwordSkillSteps = new Dictionary<Skill, List<int>>()
         {
-            { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 90, 90 } } // R, R, R, R, D, D
+            { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 0, 90, 90 } } // R, R, R, R, D, D
         };
 
         public bool IsActive { get; private set; } = false;
         private Entity player;
+        private IEnumerable<Entity> monsters;
+        private IEnumerable<Vector2> walls;
         private int anglePlayerFacing = 0; // right
         private Skill currentSkill;
 
-        public SwordSkillsManager(Entity player)
+        public SwordSkillsManager(Entity player, IEnumerable<Entity> monsters, IEnumerable<Vector2> walls)
         {
             this.player = player;
+
+            // for drawing
+            this.monsters = monsters;
+            this.walls = walls;
         }
 
         public void Activate(Skill currentSkill)        
@@ -54,7 +61,20 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             var tiles = this.GetSkillTiles();
             foreach (var tile in tiles) {
-                console.DrawCharacter(tile.Item1, tile.Item2, '*', Palette.PaleYellow);
+                char character = '*';
+                Color colour = Palette.PaleYellow;
+
+                if (this.monsters.Any(m => m.X == tile.Item1 && m.Y == tile.Item2))
+                {
+                    character = 'X';
+                    colour = Palette.Red;
+                }
+                else if (this.walls.Any(w => w.X == tile.Item1 && w.Y == tile.Item2))
+                {
+                    character = 'X';
+                    colour = Palette.White;
+                }
+                console.DrawCharacter(tile.Item1, tile.Item2, character, colour);
             }
         }
 
@@ -120,6 +140,16 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private double DegreeToRadian(double radians)
         {
             return Math.PI * radians / 180.0;
+        }
+
+        public int GetCurrentSkillDamage()
+        {
+            switch (this.currentSkill) {
+                case Skill.LStrike:
+                    return (int)Math.Ceiling(this.player.Strength / 2f);
+            }
+
+            throw new InvalidOperationException($"Damage formula  implemented for {this.currentSkill}!");
         }
     }
 }

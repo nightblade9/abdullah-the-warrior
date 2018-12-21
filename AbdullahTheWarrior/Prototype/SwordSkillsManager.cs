@@ -11,27 +11,33 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     /// </summary>
     public class SwordSkillsManager
     {
+        public enum Skill {
+            LStrike,
+        }
+
         /// <summary>
         /// Dictionary of skill => list of steps. Each step is a clockwise rotation value (in degrees).
         /// Eg. if the player is facing right, 0/0/0/90/90 is R/R/R/D/D
         /// </summary>
-        private Dictionary<string, List<int>> SwordSkillSteps = new Dictionary<string, List<int>>()
+        private Dictionary<Skill, List<int>> SwordSkillSteps = new Dictionary<Skill, List<int>>()
         {
-            { "L-Strike", new List<int>() { 0, 0, 0, 0, 90, 90 } } // R, R, R, R, D, D
+            { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 90, 90 } } // R, R, R, R, D, D
         };
 
         public bool IsActive { get; private set; } = false;
         private Entity player;
         private int anglePlayerFacing = 0; // right
+        private Skill currentSkill;
 
         public SwordSkillsManager(Entity player)
         {
             this.player = player;
         }
 
-        public void Activate()        
+        public void Activate(Skill currentSkill)        
         {
             this.IsActive = true;
+            this.currentSkill = currentSkill;
         }
 
         public void Deactivate()
@@ -46,7 +52,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 return;
             }
 
-            var tiles = this.GetSkillTiles("L-Strike");
+            var tiles = this.GetSkillTiles();
             foreach (var tile in tiles) {
                 console.DrawCharacter(tile.Item1, tile.Item2, '*', Palette.PaleYellow);
             }
@@ -76,11 +82,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         /// Get the list of tiles affected if the player uses the specified skill facing the specified direction.
         /// cacingDirectionDegrees = 0 means pointing right.
         /// </summary>
-        public IEnumerable<Tuple<int, int>> GetSkillTiles(string skillName)
+        public IEnumerable<Tuple<int, int>> GetSkillTiles()
         {
             var toReturn = new List<Tuple<int, int>>();
 
-            var skillSteps = new List<int>(this.SwordSkillSteps[skillName]);
+            var skillSteps = new List<int>(this.SwordSkillSteps[this.currentSkill]);
             var previousFacing = this.anglePlayerFacing;
             var currentPosition = new Tuple<int, int>(player.X, player.Y);
 

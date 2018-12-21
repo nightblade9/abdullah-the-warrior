@@ -206,7 +206,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 }
                 else if (player.Specialization == Specialization.Ghazi && Global.KeyboardState.IsKeyPressed(Keys.G))
                 {
-                    swordSkillsManager.Activate();
+                    swordSkillsManager.Activate(SwordSkillsManager.Skill.LStrike);
                 }
 
                 if (player.CurrentHealth <= 0)
@@ -252,6 +252,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                     if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
                     {
                         this.swordSkillsManager.Deactivate();
+                    }
+                    else if (Global.KeyboardState.IsKeyPressed(Keys.G))
+                    {
+                        var affectedCells = this.swordSkillsManager.GetSkillTiles();
                     }
                 }
             }

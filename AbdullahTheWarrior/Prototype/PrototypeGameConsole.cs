@@ -204,9 +204,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     bow.Activate(this.monsters);
                 }
-                else if (player.Specialization == Specialization.Ghazi && Global.KeyboardState.IsKeyPressed(Keys.G))
+                else if (player.Specialization == Specialization.Ghazi)
                 {
-                    swordSkillsManager.Activate(SwordSkillsManager.Skill.LStrike);
+                    this.SelectPlayerSkillIfRequired();
                 }
 
                 if (player.CurrentHealth <= 0)
@@ -245,40 +245,50 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
             else if (swordSkillsManager.IsActive)
             {
-                if (swordSkillsManager.IsActive)
-                {
-                    swordSkillsManager.ProcessPlayerInput();
+                swordSkillsManager.ProcessPlayerInput();
 
-                    if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+                this.SelectPlayerSkillIfRequired();
+                if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+                {
+                    this.swordSkillsManager.Deactivate();
+                }
+                else if (Global.KeyboardState.IsKeyPressed(Keys.G)) // HIT!
+                {
+                    var affectedCells = this.swordSkillsManager.GetSkillTiles();
+                    foreach (var cell in affectedCells)
                     {
-                        this.swordSkillsManager.Deactivate();
-                    }
-                    else if (Global.KeyboardState.IsKeyPressed(Keys.G))
-                    {
-                        var affectedCells = this.swordSkillsManager.GetSkillTiles();
-                        foreach (var cell in affectedCells)
+                        if (this.walls.Any(w => w.X == cell.Item1 && w.Y == cell.Item2))
                         {
-                            if (this.walls.Any(w => w.X == cell.Item1 && w.Y == cell.Item2))
-                            {
-                                // We hit a wall. Stop now.
-                                break;
+                            // We hit a wall. Stop now.
+                            break;
+                        } else {
+                            var monster = this.monsters.SingleOrDefault(m => m.X == cell.Item1 && m.Y == cell.Item2);
+                            if (monster != null) {
+                                // HURT MONSTER.
+                                monster.Damage(swordSkillsManager.GetCurrentSkillDamage());
                             } else {
-                                var monster = this.monsters.SingleOrDefault(m => m.X == cell.Item1 && m.Y == cell.Item2);
-                                if (monster != null) {
-                                    // HURT MONSTER.
-                                    monster.Damage(swordSkillsManager.GetCurrentSkillDamage());
-                                } else {
-                                    // Blank tile. Move plz.
-                                    player.X = cell.Item1;
-                                    player.Y = cell.Item2;                                
-                                }
+                                // Blank tile. Move plz.
+                                player.X = cell.Item1;
+                                player.Y = cell.Item2;                                
                             }
                         }
                     }
+                    this.ConsumePlayerTurn();
                 }
             }
 
             return processedInput;
+        }
+
+        private void SelectPlayerSkillIfRequired()
+        {
+            if (Global.KeyboardState.IsKeyPressed(Keys.NumPad1))
+            {
+                swordSkillsManager.Activate(SwordSkillsManager.Skill.LStrike);
+            } else if (Global.KeyboardState.IsKeyPressed(Keys.NumPad2))
+            {
+                swordSkillsManager.Activate(SwordSkillsManager.Skill.SquareShield);
+            }
         }
 
         private void RedrawEverything()

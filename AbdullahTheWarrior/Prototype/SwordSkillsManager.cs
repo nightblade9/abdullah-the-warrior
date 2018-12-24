@@ -13,7 +13,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
     public class SwordSkillsManager
     {
         public enum Skill {
-            LStrike,
+            LStrike, // Aggressive/out-there movement
+            SquareShield, // Defensive, stay close to start
         }
 
         /// <summary>
@@ -22,7 +23,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         /// </summary>
         private Dictionary<Skill, List<int>> SwordSkillSteps = new Dictionary<Skill, List<int>>()
         {
-            { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 0, 90, 90 } } // R, R, R, R, D, D
+            { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 0, 90, 90 } }, // R, R, R, R, D, D
+            { Skill.SquareShield, new List<int>() { 0, 90, 180, 270 } }
         };
 
         public bool IsActive { get; private set; } = false;
@@ -159,9 +161,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {
             switch (this.currentSkill) {
                 case Skill.LStrike:
-                    return (int)Math.Ceiling(this.player.Strength / 2f);
+                    return (int)Math.Ceiling(this.player.Strength * 0.5f);
+                case Skill.SquareShield:
+                return (int)Math.Ceiling(this.player.Strength * 0.7f);
             }
-
+    
             throw new InvalidOperationException($"Damage formula  implemented for {this.currentSkill}!");
         }
     }

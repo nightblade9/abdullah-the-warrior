@@ -60,6 +60,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             }
 
             var tiles = this.GetSkillTiles();
+            Tuple<int, int> playerStopsAt = null;
+            bool stopPlayer = false;
+
             foreach (var tile in tiles) {
                 char character = '*';
                 Color colour = Palette.PaleYellow;
@@ -73,9 +76,19 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     character = 'X';
                     colour = Palette.White;
+                    stopPlayer = true;
+                } else if (!stopPlayer) {
+                    playerStopsAt = tile;
                 }
+
                 console.DrawCharacter(tile.Item1, tile.Item2, character, colour);
             }
+
+            if (playerStopsAt == null) { 
+                playerStopsAt = new Tuple<int, int>(player.X, player.Y);
+            }
+
+            console.DrawCharacter(playerStopsAt.Item1, playerStopsAt.Item2, '@', Palette.LightCyan);
         }
 
         public void ProcessPlayerInput()

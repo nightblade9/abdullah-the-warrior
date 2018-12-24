@@ -46,9 +46,13 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             EventBus.Instance.AddListener(GameEvent.EntityDeath, (e) => {
                 if (e == player)
                 {
+                    this.bow.Deactivate();
+                    this.swordSkillsManager.Deactivate();
+                    
                     this.latestMessage = "YOU DIE!!!";
                     this.player.Character = '%';
                     this.player.Color = Palette.DarkBrownPurple;
+
                     this.RedrawEverything();
                 }
                 else
@@ -288,6 +292,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             } else if (Global.KeyboardState.IsKeyPressed(Keys.NumPad2))
             {
                 swordSkillsManager.Activate(SwordSkillsManager.Skill.SquareShield);
+            } else if (Global.KeyboardState.IsKeyPressed(Keys.NumPad3))
+            {
+                swordSkillsManager.Activate(SwordSkillsManager.Skill.Wave);
             }
         }
 

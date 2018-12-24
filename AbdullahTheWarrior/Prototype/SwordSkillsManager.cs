@@ -15,6 +15,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         public enum Skill {
             LStrike, // Aggressive/out-there movement
             SquareShield, // Defensive, stay close to start
+            Wave // => /\/\
         }
 
         /// <summary>
@@ -24,7 +25,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private Dictionary<Skill, List<int>> SwordSkillSteps = new Dictionary<Skill, List<int>>()
         {
             { Skill.LStrike, new List<int>() { 0, 0, 0, 0, 0, 90, 90 } }, // R, R, R, R, D, D
-            { Skill.SquareShield, new List<int>() { 0, 90, 180, 270 } }
+            { Skill.SquareShield, new List<int>() { 0, 90, 180 } },
+            { Skill.Wave, new List<int>() { 45, 45, -45, -45 }}
         };
 
         public bool IsActive { get; private set; } = false;
@@ -163,7 +165,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 case Skill.LStrike:
                     return (int)Math.Ceiling(this.player.Strength * 0.5f);
                 case Skill.SquareShield:
-                return (int)Math.Ceiling(this.player.Strength * 0.7f);
+                    return (int)Math.Ceiling(this.player.Strength * 0.7f);
+                case Skill.Wave:
+                return this.player.Strength;
             }
     
             throw new InvalidOperationException($"Damage formula  implemented for {this.currentSkill}!");

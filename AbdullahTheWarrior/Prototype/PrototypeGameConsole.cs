@@ -22,6 +22,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         private string latestMessage = "";
 
         private BowManager bow;
+        private AreaSkillsManager areaSkillsManager;
         private SwordSkillsManager swordSkillsManager;
 
         public PrototypeGameConsole(int width, int height, Specialization specialization,
@@ -31,7 +32,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
             this.player = new Player(specialization, playerHealth, playerStrength, playerDefense, playerVision, numberOfTurns, numberOfAttacks);
 
             this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
+
             this.bow = new BowManager(this.player);
+            this.areaSkillsManager = new AreaSkillsManager(this.player, this.monsters, this.walls);
             this.swordSkillsManager = new SwordSkillsManager(this.player, this.monsters, this.walls);
 
             this.GenerateWalls();
@@ -156,7 +159,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {            
             var processedInput = false;
 
-            if (!bow.IsActive && !swordSkillsManager.IsActive)
+            if (!bow.IsActive && !areaSkillsManager.IsActive && !swordSkillsManager.IsActive)
             {
                 if (Global.KeyboardState.IsKeyPressed(Keys.Escape) || Global.KeyboardState.IsKeyPressed(Keys.Q))
                 {
@@ -211,6 +214,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 else if (player.Specialization == Specialization.Ghazi)
                 {
                     this.SelectPlayerSkillIfRequired();
+                }
+                else if (player.Specialization == Specialization.Faris && Global.KeyboardState.IsKeyPressed(Keys.G))
+                {
+                    areaSkillsManager.Activate(AreaSkillsManager.AreaSkill.Whirlwind);
                 }
 
                 if (player.CurrentHealth <= 0)
@@ -277,6 +284,23 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                             }
                         }
                     }
+                    this.ConsumePlayerTurn();
+                }
+            }
+            else if (areaSkillsManager.IsActive)
+            {
+                areaSkillsManager.ProcessPlayerInput();
+
+                if (Global.KeyboardState.IsKeyPressed(Keys.Escape))
+                {
+                    this.areaSkillsManager.Deactivate();
+                }
+                else if (Global.KeyboardState.IsKeyPressed(Keys.G)) // HIT!
+                {
+                    var tiles = areaSkillsManager.GetSkillTiles();
+                    var monstersOnTiles = this.monsters.Where(m => tiles.Any(t => m.X == t.X && m.Y == t.Y));
+                    var damage = areaSkillsManager.GetCurrentSkillDamage();
+                    monstersOnTiles.ToList().ForEach(m => m.Damage(damage));
                     this.ConsumePlayerTurn();
                 }
             }
@@ -353,6 +377,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
 
             this.bow.Draw(this);
             this.swordSkillsManager.Draw(this);
+            this.areaSkillsManager.Draw(this);
 
             this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.DarkPurpleBrown, ' ');
             this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.DarkPurpleBrown, ' ');

@@ -78,10 +78,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {
             this.Clear();
 
-            int startX = 8;
+            int startX = 5;
             int startY = this.Height / 2;
 
-            this.Print(startX, startY, "[A] Faris (bow, multiple turns, multiple hits per attack)");
+            this.Print(startX, startY, "[A] Faris (bow, multiple turns, multiple hits per attack, area attacks)");
             this.Print(startX, startY + 1, "[B] Stunhammer (stuns and knocks back enemies)");
             this.Print(startX, startY + 2, "[C] Ghazi (moves across the map during attacks)");
         }

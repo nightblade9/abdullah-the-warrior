@@ -40,6 +40,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
                 {
                     this.StartGameAs(Specialization.Ghazi);
                 }
+                else if (Global.KeyboardState.IsKeyReleased(Keys.Escape))
+                {
+                    Environment.Exit(0);
+                }
             }
         }
 

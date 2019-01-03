@@ -163,9 +163,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototype
         {
             switch (this.currentSkill) {
                 case Skill.LStrike:
-                    return (int)Math.Ceiling(this.player.Strength * 0.5f);
+                    return (int)Math.Ceiling(this.player.Strength * 1.1f);
                 case Skill.SquareShield:
-                    return (int)Math.Ceiling(this.player.Strength * 0.7f);
+                    return (int)Math.Ceiling(this.player.Strength * 0.8f);
                 case Skill.Wave:
                 return this.player.Strength;
             }

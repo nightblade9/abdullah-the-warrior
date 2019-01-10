@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype1
 {
     public class MainMenuConsole : SadConsole.Console
     {

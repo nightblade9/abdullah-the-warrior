@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using SadConsole;
 using GoRogue.MapViews;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype1
 {
     public class PrototypeGameConsole : SadConsole.Console
     {

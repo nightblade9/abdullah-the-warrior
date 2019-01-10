@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using SadConsole;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype1
 {
     public static class ConsoleExtensions
     {

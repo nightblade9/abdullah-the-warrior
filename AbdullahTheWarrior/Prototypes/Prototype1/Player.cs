@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace DeenGames.AbdullahTheWarrior.Prototype
+namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype1
 {
     public class Player : Entity
     {

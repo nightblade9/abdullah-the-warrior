@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
-using DeenGames.AbdullahTheWarrior.Prototype;
+using DeenGames.AbdullahTheWarrior.Prototypes.Prototype1;
 using Microsoft.Xna.Framework.Input;
 
 namespace DeenGames.AbdullahTheWarrior

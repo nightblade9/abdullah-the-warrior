@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using SadConsole;
-using DeenGames.AbdullahTheWarrior.Prototypes.Prototype1;
+using DeenGames.AbdullahTheWarrior.Prototypes.Prototype2;
 using Microsoft.Xna.Framework.Input;
 
 namespace DeenGames.AbdullahTheWarrior
@@ -60,7 +60,7 @@ namespace DeenGames.AbdullahTheWarrior
 
             // Initialize the windows
             // Global.CurrentScreen.Children.Add(new PrototypeGameConsole(GameWidthInTiles, GameHeightInTiles));
-            Global.CurrentScreen.Children.Add(new MainMenuConsole(GameWidthInTiles, GameHeightInTiles));
+            Global.CurrentScreen.Children.Add(new PrototypeGameConsole(GameWidthInTiles, GameHeightInTiles));
         }
 
         private static void Update(GameTime time)

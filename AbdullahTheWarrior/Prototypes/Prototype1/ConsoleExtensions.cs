@@ -7,7 +7,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype1
     {
         public static void DrawCharacter(this SadConsole.Console console, float x, float y, char character, Color color)
         {
-            console.DrawCharacter(x, y, character, color, Palette.DarkestBlue);
+            console.DrawCharacter(x, y, character, color, Palette.BlueGreen);
         }
 
         public static void DrawCharacter(this SadConsole.Console console, float x, float y, char character, Color color, Color backgroundColour)

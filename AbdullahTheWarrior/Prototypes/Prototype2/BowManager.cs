@@ -42,7 +42,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
             if (this.Target != null)
             {
-                console.DrawCharacter(this.Target.X, this.Target.Y, this.Target.Character, this.Target.Color, Palette.PaleYellow);
+                console.DrawCharacter(this.Target.X, this.Target.Y, this.Target.Character, this.Target.Color, Palette.YellowAlmost);
             }
         }
 

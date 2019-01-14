@@ -58,7 +58,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                     
                     this.latestMessage = "YOU DIE!!!";
                     this.player.Character = '%';
-                    this.player.Color = Palette.DarkBrownPurple;
+                    this.player.Color = Palette.Burgandy;
 
                     this.RedrawEverything();
                 }
@@ -309,7 +309,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             {
                 for (var x = 0; x < this.Width; x++)
                 {
-                    var colour = Palette.DarkGrey;
+                    var colour = Palette.Grey;
                     if (IsInPlayerFov(x, y))
                     {
                         colour = Palette.LightGrey;
@@ -320,7 +320,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
             foreach (var wall in this.walls)
             {
-                var colour = Palette.DarkGrey;
+                var colour = Palette.Grey;
                 if (IsInPlayerFov((int)wall.X, (int)wall.Y))
                 {
                     colour = Palette.LightGrey;
@@ -346,9 +346,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                         }
                     }
                     this.DrawCharacter(monster.X, monster.Y, character, monster.Color);
-                    // DEBUGGING HACK
+                    
                     if (monster.CurrentHealth < monster.TotalHealth) {
-                        this.DrawCharacter(monster.X, monster.Y, character, Palette.Gold);
+                        this.DrawCharacter(monster.X, monster.Y, character, Palette.Orange);
                     }
                 }
             }
@@ -358,8 +358,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             this.bow.Draw(this);
             this.swordSkillsManager.Draw(this);
 
-            this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.DarkPurpleBrown, ' ');
-            this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.DarkPurpleBrown, ' ');
+            this.DrawLine(new Point(0, this.Height - 2), new Point(this.Width, this.Height - 2), null, Palette.BlackAlmost, ' ');
+            this.DrawLine(new Point(0, this.Height - 1), new Point(this.Width, this.Height - 1), null, Palette.BlackAlmost, ' ');
             this.DrawHealthIndicators();
             this.Print(0, this.Height - 1, this.latestMessage, Palette.White);
         }

@@ -5,46 +5,48 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
     // Values from Fleja palette: https://lospec.com/palette-list/fleja-master-palette
     public static class Palette
     {
-        public static Color DarkestBlue = FromHex("#1f1833");
-        public static Color DarkestGrey = FromHex("#2b2e42");
+       public static Color BlackAlmost= FromHex("#25131a");
+        public static Color DarkPurple= FromHex("#3d253b");
+        public static Color DarkMutedBrown= FromHex("#523b40");
+        public static Color DarkestGreen= FromHex("#1f3736");
+        public static Color DarkGreen= FromHex("#2a5a39");
 
-        public static Color DarkGrey = FromHex("#414859");
-        public static Color Grey = FromHex("#68717a");
-        public static Color LightGrey = FromHex("#90a1a8");
-        public static Color LightestGrey = FromHex("#b6cbcf");
-        public static Color White = FromHex("#ffffff");
-        public static Color LightSkin = FromHex("#fcbf8a");
-        public static Color MediumSkin = FromHex("#b58057");
-        public static Color DarkSkin = FromHex("#8a503e");
-        public static Color DarkBrownPurple = FromHex("#5c3a41");
-        public static Color Red = FromHex("#c93038");
-        public static Color Orange = FromHex("#de6a38");
+        public static Color Green= FromHex("#427f3b");
+        public static Color LightMutedGreen= FromHex("#80a53f");
+        public static Color LightGreen= FromHex("#bbc44e");
+        public static Color DarkLimeGreen= FromHex("#96c641");
+        public static Color LimeGreen= FromHex("#ccf61f");
 
-        public static Color Gold = FromHex("#ffad3b");
-        public static Color Offwhite = FromHex("#ffe596");
-        public static Color PaleYellow = FromHex("#fcf960");
-        public static Color LimeGreen = FromHex("#b4d645");
-        public static Color Green = FromHex("#51c43f");
-        public static Color BlueGreen = FromHex("#309c63");
-        public static Color Aquamarine = FromHex("#236d7a");
-        public static Color DarkAquamarine = FromHex("#264f6e");
-        public static Color DarkBlue = FromHex("#233663");
+        public static Color MutedDarkLimeGreen = FromHex("#8a961f");
+        public static Color DarkGreenMuted= FromHex("#5c6b53");
+        public static Color Brown= FromHex("#895a45");
+        public static Color Orange= FromHex("#d1851e");
+        public static Color YellowAlmost= FromHex("#ffd569");
 
-        public static Color FadedBlue = FromHex("#417291");
-        public static Color LighterFadedBlue = FromHex("#4c93ad");
+        public static Color LighterBrown= FromHex("#bf704d");
+        public static Color LightestBrown= FromHex("#e1a171");
+        public static Color OffWhite= FromHex("#e6deca");
+        public static Color Burgandy= FromHex("#9b4c51");
+        public static Color DarkBurgandyPurple= FromHex("#802954");
 
-        public static Color LightestFadedBlue = FromHex("#63c2c9");
-        public static Color WashedOutFadedBlue = FromHex("#94d2d4");
-        public static Color LightCyan = FromHex("#b8fdff");
-        public static Color DarkPurpleBrown = FromHex("#3c2940");
-        public static Color DarkPurple = FromHex("#46275c");
-        public static Color FadedDarkPurple = FromHex("#826481");
-        public static Color Skin = FromHex("#f7a48b");
-        public static Color FadedPurple = FromHex("#c27182");
-        public static Color Purple = FromHex("#852d66");
+        public static Color Red= FromHex("#d01946");
+        public static Color LightRed= FromHex("#e84444");
+        public static Color DarkestBlue= FromHex("#40369f");
+        public static Color Purple= FromHex("#7144ff");
+        public static Color LilacPinkPurple = FromHex("#af69bf");
 
+        public static Color LightLilacPink = FromHex("#eaa5ff");
+        public static Color Blue= FromHex("#5880cc");
+        public static Color Aqua= FromHex("#62abd4");
+        public static Color Cyan= FromHex("#9bf0fd");
+        public static Color CyanMuted= FromHex("#cae6f5");
 
-
+        public static Color White= FromHex("#ffffff");
+        public static Color LightGrey= FromHex("#a7acba");
+        public static Color Grey= FromHex("#606060");
+        public static Color DarkBlueMuted= FromHex("#56587b");
+        public static Color DarkSkinBrown = FromHex("#9a8571");
+        public static Color SkinPeach= FromHex("#dfbbb3");
         private static Color FromHex(string hexValue)
         {
             if (hexValue.StartsWith("#"))

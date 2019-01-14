@@ -69,7 +69,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
             foreach (var tile in tiles) {
                 char character = '*';
-                Color colour = Palette.PaleYellow;
+                Color colour = Palette.YellowAlmost;
 
                 if (this.monsters.Any(m => m.X == tile.Item1 && m.Y == tile.Item2))
                 {
@@ -92,7 +92,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 playerStopsAt = new Tuple<int, int>(player.X, player.Y);
             }
 
-            console.DrawCharacter(playerStopsAt.Item1, playerStopsAt.Item2, '@', Palette.LightCyan);
+            console.DrawCharacter(playerStopsAt.Item1, playerStopsAt.Item2, '@', Palette.Cyan);
         }
 
         public void ProcessPlayerInput()

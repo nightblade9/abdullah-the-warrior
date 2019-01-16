@@ -72,11 +72,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         private void GenerateWalls()
         {
             var map = new ArrayMap<bool>(this.Width, this.mapHeight);
-            GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map);
-            
+            GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map, null, 40);
+            // Invert. We want an internal cave surrounded by walls.
             for (var y = 0; y < this.mapHeight; y++) {
                 for (var x = 0; x < this.Width; x++) {
-                    if (map[x, y] == true) {
+                    if (map[x, y] == false) {
                         this.walls.Add(new Vector2(x, y));
                     }
                 }

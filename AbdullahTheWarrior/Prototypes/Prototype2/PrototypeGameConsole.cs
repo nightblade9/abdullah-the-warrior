@@ -73,13 +73,20 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         {
             var map = new ArrayMap<bool>(this.Width, this.mapHeight);
             GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map, null, 40);
-            // Invert. We want an internal cave surrounded by walls.
+
             for (var y = 0; y < this.mapHeight; y++) {
                 for (var x = 0; x < this.Width; x++) {
-                    if (map[x, y] == false) {
+                    // Invert. We want an internal cave surrounded by walls.
+                    map[x, y] = !map[x, y];
+                    if (map[x, y]) {
                         this.walls.Add(new Vector2(x, y));
                     }
                 }
+            }
+
+            var pewPew = new List<Tuple<int, int, int, int>>();
+            while (pewPew.Count < 10) {
+                pewPew.Add(LaserReceptacle.FindLaserLocation(map));
             }
         }
 

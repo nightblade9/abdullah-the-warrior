@@ -83,15 +83,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             for (var i = 0; i < numLasers; i++) {
                 // Generates overlapping lasers. That's not a bad thing.
                 var location = LaserReceptacle.FindLaserLocation(map);
-                if (location.Item1 == location.Item3) {
-                    // Vertical laser
-                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Down));
-                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item4, Direction.Up));
-                } else {
-                    // horizontal laser
-                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right));
-                    this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left));
-                }
+                // horizontal bar
+                System.Console.WriteLine($"H laser at {location.Item1}, {location.Item2}");
+                this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right));
+                this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left));
             }
         }
 
@@ -390,8 +385,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                     switch (laser.Direction) {
                         case Direction.Left: character = '{'; break;
                         case Direction.Right: character = '}'; break;
-                        case Direction.Up: character = '^'; break;
-                        case Direction.Down: character = 'v'; break;
+                        // case Direction.Up: character = '^'; break;
+                        // case Direction.Down: character = 'v'; break;
                     }
                     this.DrawCharacter(laser.X, laser.Y, character, Palette.Brown);
                 //}

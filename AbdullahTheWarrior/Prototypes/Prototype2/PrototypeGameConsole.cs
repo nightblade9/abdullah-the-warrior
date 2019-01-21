@@ -49,6 +49,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
             var map = this.GenerateWalls();
             this.GenerateLasers(map);
+
             this.GenerateMonsters();
 
             var emptySpot = this.FindEmptySpot();

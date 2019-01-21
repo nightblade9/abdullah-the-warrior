@@ -40,6 +40,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 var endX = x;
                 var endY = y;
 
+                // Keep looking if the starting location is solid
+                if (map[x, y] == true) {
+                    continue;
+                }
+
                 Vector2 size = Vector2.Zero;
 
                 if (isHorizontal) {

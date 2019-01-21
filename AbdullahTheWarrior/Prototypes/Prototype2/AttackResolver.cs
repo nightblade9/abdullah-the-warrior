@@ -7,7 +7,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 {
     public static class AttackResolver
     {
-        private static Random random = new Random();
 
         public static int Attacks(Entity attacker, Entity defender, bool attackStuns = false)
         {
@@ -44,7 +43,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         public static void ApplyKnockbacks(Player player, Entity monster, IList<Entity> monsters, IList<Vector2> walls, int damage)
         {
-            if (random.Next(0, 100) <= Player.KnockBackProbability)
+            if (PrototypeGameConsole.GlobalRandom.Next(0, 100) <= Player.KnockBackProbability)
             {
                 // Primary knockback in the direction of player => monster
                 var dx = monster.X - player.X;
@@ -81,7 +80,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                         var target = monsters.SingleOrDefault(m => m.X == x && m.Y == y && m != monster);
                         if (target != null) {
                             // Secondary knockback
-                            var sign = random.Next(100) <= 50 ? -Player.SecondaryKnockbackDistance : Player.SecondaryKnockbackDistance;
+                            var sign = PrototypeGameConsole.GlobalRandom.Next(100) <= 50 ? -Player.SecondaryKnockbackDistance : Player.SecondaryKnockbackDistance;
                             if (dx == 0) {
                                 // Primary knockback was vertical, go horizontal. Check all spaces and move the player one by one if the space is empty.
                                 for (var i = Math.Min(target.X, target.X + sign); i < target.X + sign; i++) {
@@ -105,7 +104,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         private static void TryToStun(Player player, Entity monster)
         {
-            if (random.Next(100) <= Player.StunProbability)
+            if (PrototypeGameConsole.GlobalRandom.Next(100) <= Player.StunProbability)
             {
                 monster.Stun(Player.StunTurns);
             }

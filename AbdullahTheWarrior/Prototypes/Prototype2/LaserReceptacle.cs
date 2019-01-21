@@ -11,20 +11,32 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
     /// </summary>
     class LaserReceptacle
     {
-        private const int MinLength = 5;
-        private static readonly Vector2 MaxLengthFactor = new Vector2(0.3f, 0.5f); // 30% map width, 50% map height
+        public int X {get; private set;}
+        public int Y {get; private set;}
 
-        // X,Y; width, height
+        private const int MinLength = 5;
+
+        // Lasers fire every turn. Does this fire on odd or even turns?
+        private bool firesOnAlternateTurns = false;
+        private static readonly Vector2 MaxLengthFactor = new Vector2(0.3f, 0.5f); // 30% map width, 50% map height
+        public Direction Direction {get; private set;}
+
+        public LaserReceptacle(int x, int y, Direction direction)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Direction = direction;
+        }
+
         public static Tuple<int, int, int, int> FindLaserLocation(ArrayMap<bool> map)
         {
-            var random = new Random();
-            var isHorizontal = random.Next(100) <= 50;
+            var isHorizontal = PrototypeGameConsole.GlobalRandom.Next(100) <= 50;
             var maxLength = isHorizontal ? MaxLengthFactor.X * map.Width : MaxLengthFactor.Y *  map.Height;
             int halfLength = (int)Math.Round(maxLength / 2);
 
             while (true) {
-                var x = random.Next(map.Width);
-                var y = random.Next(map.Height);
+                var x = PrototypeGameConsole.GlobalRandom.Next(map.Width);
+                var y = PrototypeGameConsole.GlobalRandom.Next(map.Height);
                 var endX = x;
                 var endY = y;
 
@@ -39,13 +51,13 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 if (endX < x) {
                     var temp = x;
                     x = endX;
-                    endX = x;
+                    endX = temp;
                 }
 
                 if (endY < y) {
                     var temp = y;
                     y = endY;
-                    endY = y;
+                    endY = temp;
                 }
 
                 var dx = Math.Abs(endX - x);

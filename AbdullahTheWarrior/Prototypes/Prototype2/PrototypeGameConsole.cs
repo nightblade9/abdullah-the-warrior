@@ -6,15 +6,21 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using SadConsole;
 using GoRogue.MapViews;
+using Troschuetz.Random;
+using Troschuetz.Random.Generators;
 
 namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
+        public static readonly IGenerator GlobalRandom = new StandardGenerator(GameSeed);
+
+        private const int GameSeed = 1234;
+
         private readonly Player player;
-        private readonly Random random = new Random();
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<Vector2> walls = new List<Vector2>();
+        private readonly List<LaserReceptacle> lasers = new List<LaserReceptacle>();
         private int playerTurnsLeftUntilMonsterTurns = 0;
 
         private readonly int mapHeight;
@@ -41,7 +47,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             this.bow = new BowManager(this.player);
             this.swordSkillsManager = new SwordSkillsManager(this.player, this.monsters, this.walls);
 
-            this.GenerateWalls();
+            var map = this.GenerateWalls();
+            this.GenerateLasers(map);
             this.GenerateMonsters();
 
             var emptySpot = this.FindEmptySpot();
@@ -69,10 +76,28 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             });
         }
 
-        private void GenerateWalls()
+        private void GenerateLasers(ArrayMap<bool> map)
+        {
+            var numLasers = PrototypeGameConsole.GlobalRandom.Next(3, 5); //
+            for (var i = 0; i < numLasers; i++) {
+                // Generates overlapping lasers. That's not a bad thing.
+                var location = LaserReceptacle.FindLaserLocation(map);
+                if (location.Item1 == location.Item3) {
+                    // Vertical laser
+                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Down));
+                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item4, Direction.Up));
+                } else {
+                    // horizontal laser
+                    this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right));
+                    this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left));
+                }
+            }
+        }
+
+        private ArrayMap<bool> GenerateWalls()
         {
             var map = new ArrayMap<bool>(this.Width, this.mapHeight);
-            GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map, null, 40);
+            GoRogue.MapGeneration.Generators.CellularAutomataGenerator.Generate(map, PrototypeGameConsole.GlobalRandom, 40);
 
             for (var y = 0; y < this.mapHeight; y++) {
                 for (var x = 0; x < this.Width; x++) {
@@ -84,10 +109,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 }
             }
 
-            var pewPew = new List<Tuple<int, int, int, int>>();
-            while (pewPew.Count < 10) {
-                pewPew.Add(LaserReceptacle.FindLaserLocation(map));
-            }
+            return map;
         }
 
         public override void Update(System.TimeSpan delta)
@@ -137,7 +159,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                         // Move closer. Naively. Randomly.
                         var dx = player.X - monster.X;
                         var dy = player.Y - monster.Y;
-                        var tryHorizontallyFirst = random.Next(0, 100) <= 50;
+                        var tryHorizontallyFirst = PrototypeGameConsole.GlobalRandom.Next(0, 100) <= 50;
                         if (tryHorizontallyFirst && dx != 0)
                         {
                             this.TryToMove(monster, monster.X + Math.Sign(dx), monster.Y);
@@ -360,6 +382,20 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 }
             }
 
+            foreach (var laser in this.lasers)
+            {
+                //if (IsInPlayerFov(laser.X, laser.Y)) {
+                    var character = ' ';
+                    switch (laser.Direction) {
+                        case Direction.Left: character = '{'; break;
+                        case Direction.Right: character = '}'; break;
+                        case Direction.Up: character = '^'; break;
+                        case Direction.Down: character = 'v'; break;
+                    }
+                    this.DrawCharacter(laser.X, laser.Y, character, Palette.Brown);
+                //}
+            }
+
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);
 
             this.bow.Draw(this);
@@ -397,7 +433,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         private void GenerateMonsters()
         {
-            var numMonsters = random.Next(80, 90);
+            var numMonsters = PrototypeGameConsole.GlobalRandom.Next(80, 90);
             while (this.monsters.Count < numMonsters)
             {
                 var spot = this.FindEmptySpot();
@@ -415,8 +451,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             
             do 
             {
-                targetX = random.Next(0, this.Width);
-                targetY = random.Next(0, this.mapHeight);
+                targetX = PrototypeGameConsole.GlobalRandom.Next(0, this.Width);
+                targetY = PrototypeGameConsole.GlobalRandom.Next(0, this.mapHeight);
             } while (!this.IsWalkable(targetX, targetY));
 
             return new Vector2(targetX, targetY);

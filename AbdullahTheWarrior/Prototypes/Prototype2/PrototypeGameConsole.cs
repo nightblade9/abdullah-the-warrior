@@ -31,11 +31,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         private SwordSkillsManager swordSkillsManager;
 
         static PrototypeGameConsole() {
-             if (GameSeed.HasValue) {
-                 GlobalRandom = new StandardGenerator(GameSeed.Value);
-             } else {
-                 GlobalRandom = new StandardGenerator();
-             }
+            if (!GameSeed.HasValue) {
+                GameSeed = new Random().Next();
+            }
+            
+            System.Console.WriteLine($"Universe #{GameSeed.Value}");
+            GlobalRandom = new StandardGenerator(GameSeed.Value);
         }
 
         public PrototypeGameConsole(int width, int height) : base(width, height)

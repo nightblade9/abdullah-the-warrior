@@ -13,9 +13,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 {
     public class PrototypeGameConsole : SadConsole.Console
     {
-        public static readonly IGenerator GlobalRandom = new StandardGenerator(GameSeed);
+        private static readonly int? GameSeed = null;
 
-        private const int GameSeed = 1234;
+        public static readonly IGenerator GlobalRandom;
 
         private readonly Player player;
         private readonly List<Entity> monsters = new List<Entity>();
@@ -29,6 +29,14 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         private BowManager bow;
         private SwordSkillsManager swordSkillsManager;
+
+        static PrototypeGameConsole() {
+             if (GameSeed.HasValue) {
+                 GlobalRandom = new StandardGenerator(GameSeed.Value);
+             } else {
+                 GlobalRandom = new StandardGenerator();
+             }
+        }
 
         public PrototypeGameConsole(int width, int height) : base(width, height)
         {

@@ -34,6 +34,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             int halfLength = (int)Math.Round(maxLength / 2);
 
             while (true) {
+                // TODO: prune these so they're not [0, w] but [0 + halfLength, w - halfLength]
                 var x = PrototypeGameConsole.GlobalRandom.Next(map.Width);
                 var y = PrototypeGameConsole.GlobalRandom.Next(map.Height);
                 

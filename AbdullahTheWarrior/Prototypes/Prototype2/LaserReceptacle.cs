@@ -52,7 +52,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
                 if (lasers.Any(l => l.X == x && l.Y == y) || walls.Any(w => w.X == x && w.Y == y) || monsters.Any(m => m.X == x && m.Y == y))
                 {
-                    // Already occupied
+                    // This spot is already occupied
                     continue;
                 }
 
@@ -140,7 +140,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 var monster = monsters.SingleOrDefault(m => m.X == x && m.Y == y);
                 if (monster != null) {
                     // instant disintegration!
-                    // monsters.Remove(monster);
+                    monster.Die();
                 }
 
                 var laser = lasers.SingleOrDefault(l => l.X == x && l.Y == y);

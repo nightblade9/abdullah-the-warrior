@@ -163,7 +163,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 var distance = Math.Sqrt(Math.Pow(player.X - monster.X, 2) + Math.Pow(player.Y - monster.Y, 2));
 
                 // Monsters who you can see, or hurt monsters, attack.
-                if (!monster.IsStunned && (distance <= monster.VisionRange || monster.CurrentHealth < monster.TotalHealth))
+                if (!monster.IsDead && !monster.IsStunned && (distance <= monster.VisionRange || monster.CurrentHealth < monster.TotalHealth))
                 {
                     // Process turn.
                     if (distance <= 1)
@@ -208,6 +208,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         private bool ProcessPlayerInput()
         {            
+            if (player.IsDead) {
+                return false; // don't pass time
+            }
+
             var processedInput = false;
 
             if (!bow.IsActive && !swordSkillsManager.IsActive)
@@ -415,6 +419,10 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                     foreach (var beam in laser.Beams)
                     {
                         this.DrawCharacter(beam.X, beam.Y, '=', Palette.Blue);
+                        if (player.X == beam.X && player.Y == beam.Y)
+                        {
+                            player.Die();
+                        }
                     }
                 //}
             }

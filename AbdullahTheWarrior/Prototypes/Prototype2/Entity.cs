@@ -46,6 +46,13 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             this.NumberOfAttacks = numberOfAttacks;
         }
 
+        public void Die()
+        {
+            this.CurrentHealth = 0;
+            this.Character = '%';
+            this.Color = Palette.DarkBurgandyPurple;
+        }
+
         public void Damage(int damage)
         {
             if (damage < 0) 
@@ -74,5 +81,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         }
 
         public bool IsStunned { get { return this.TurnsStunned > 0; } }
+
+        public bool IsDead { get { return this.CurrentHealth <= 0; } }
     }
 }

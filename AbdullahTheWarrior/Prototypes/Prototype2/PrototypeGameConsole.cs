@@ -26,6 +26,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         private readonly int mapHeight;
 
         private string latestMessage = "";
+        private ArrayMap<bool> map;
 
         private BowManager bow;
         private SwordSkillsManager swordSkillsManager;
@@ -56,7 +57,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             this.bow = new BowManager(this.player);
             this.swordSkillsManager = new SwordSkillsManager(this.player, this.monsters, this.walls);
 
-            var map = this.GenerateWalls();
+            this.map = this.GenerateWalls();
             this.GenerateLasers(map);
 
             this.GenerateMonsters();
@@ -91,11 +92,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             var numLasers = PrototypeGameConsole.GlobalRandom.Next(3, 5); //
             for (var i = 0; i < numLasers; i++) {
                 // Generates overlapping lasers. That's not a bad thing.
-                var location = LaserReceptacle.FindLaserLocation(map);
+                var location = LaserReceptacle.FindLaserLocation(map, lasers, walls, monsters);
                 // horizontal bar
                 System.Console.WriteLine($"H laser at {location.Item1}, {location.Item2}");
-                this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right));
-                this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left));
+                bool isAlternating = PrototypeGameConsole.GlobalRandom.NextBoolean();
+                this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right, isAlternating));
+                this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left, isAlternating));
             }
         }
 
@@ -134,11 +136,22 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         private void ConsumePlayerTurn()
         {
             this.playerTurnsLeftUntilMonsterTurns -= 1;
+
             if (this.playerTurnsLeftUntilMonsterTurns <= 0)
             {
                 this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
                 this.ProcessMonsterTurns();
+                this.ProcessLasers();
             }
+        }
+
+        private void ProcessLasers()
+        {
+            // Flip lasers on/off
+            this.lasers.ForEach(l => l.ProcessTurn());
+            // Find the on ones and PEW PEW
+            var onLasers = this.lasers.Where(l => l.IsOn);
+            onLasers.ToList().ForEach(l => l.Fire(lasers, walls, monsters, this.map.Width, this.mapHeight));
         }
 
         private void ProcessMonsterTurns()
@@ -398,6 +411,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                         // case Direction.Down: character = 'v'; break;
                     }
                     this.DrawCharacter(laser.X, laser.Y, character, Palette.Brown);
+
+                    foreach (var beam in laser.Beams)
+                    {
+                        this.DrawCharacter(beam.X, beam.Y, '=', Palette.Blue);
+                    }
                 //}
             }
 

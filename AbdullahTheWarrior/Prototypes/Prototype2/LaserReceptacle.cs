@@ -1,6 +1,7 @@
 using GoRogue.MapViews;
 using Microsoft.Xna.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
@@ -11,24 +12,29 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
     /// </summary>
     class LaserReceptacle
     {
-        public int X {get; private set;}
-        public int Y {get; private set;}
-
+        private static readonly Vector2 MaxLengthFactor = new Vector2(0.3f, 0.5f); // 30% map width, 50% map height
         private const int MinLength = 5;
 
-        // Lasers fire every turn. Does this fire on odd or even turns?
-        private bool firesOnAlternateTurns = false;
-        private static readonly Vector2 MaxLengthFactor = new Vector2(0.3f, 0.5f); // 30% map width, 50% map height
+        public int X {get; private set;}
+        public int Y {get; private set;}
+        
         public Direction Direction {get; private set;}
 
-        public LaserReceptacle(int x, int y, Direction direction)
+        public bool IsOn { get; private set; } = false;
+
+        public IList<Vector2> Beams { get; private set; } = new List<Vector2>();
+
+        public LaserReceptacle(int x, int y, Direction direction, bool isAlternating)
         {
             this.X = x;
             this.Y = y;
             this.Direction = direction;
+            if (isAlternating) { 
+                this.IsOn = true;
+            }
         }
 
-        public static Tuple<int, int, int, int> FindLaserLocation(ArrayMap<bool> map)
+        public static Tuple<int, int, int, int> FindLaserLocation(ArrayMap<bool> map, List<LaserReceptacle> lasers, List<Vector2> walls, List<Entity> monsters)
         {
             var maxLength = MaxLengthFactor.X * map.Width;
             int halfLength = (int)Math.Round(maxLength / 2);
@@ -41,6 +47,12 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
                 // Keep looking if the starting location is solid
                 if (map[x, y] == true) {
+                    continue;
+                }
+
+                if (lasers.Any(l => l.X == x && l.Y == y) || walls.Any(w => w.X == x && w.Y == y) || monsters.Any(m => m.X == x && m.Y == y))
+                {
+                    // Already occupied
                     continue;
                 }
 
@@ -65,6 +77,89 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 var dx = Math.Abs(endX - startX);
                 if (dx >= MinLength && dx <= (int)(map.Width * MaxLengthFactor.X)) {
                     return new Tuple<int, int, int, int>(startX, y, endX, y);
+                }
+            }
+        }
+
+        public static Direction Invert(Direction source)
+        {
+            switch(source) {
+                case Direction.Left:
+                    return Direction.Right;
+                case Direction.Right:
+                    return Direction.Left;
+                default:
+                    throw new InvalidOperationException($"Not sure how to invert {source} direction");
+            }
+        }
+
+        public void ProcessTurn()
+        {
+            this.IsOn = !this.IsOn;
+            if (!this.IsOn) {
+                this.Beams.Clear();
+            }
+        }
+
+        public void Fire(List<LaserReceptacle> lasers, List<Vector2> walls, List<Entity> monsters, int mapWidth, int mapHeight)
+        {
+            this.Beams.Clear();
+
+            bool isFiring = true;
+            Vector2 next = new Vector2(this.X, this.Y);
+            Vector2 unitStep;
+            switch (this.Direction) {
+                case Direction.Left:
+                    unitStep = new Vector2(-1, 0);
+                    break;
+                case Direction.Right:
+                    unitStep = new Vector2(1, 0);
+                    break;
+                default:
+                    throw new InvalidOperationException($"Not sure how to fire a laser {this.Direction}");
+            }
+
+            while (isFiring)
+            {
+                next += unitStep;
+                var x = (int)next.X;
+                var y = (int)next.Y;
+                var addBeam = true;
+
+                if (x < 0 || y < 0 || x > mapWidth || y >= mapHeight)
+                {
+                    isFiring = false;
+                    break;
+                }
+
+                var wall = walls.SingleOrDefault(w => w.X == x && w.Y == y);
+                if (wall != null) {
+                    walls.Remove(wall);
+                }
+                
+                var monster = monsters.SingleOrDefault(m => m.X == x && m.Y == y);
+                if (monster != null) {
+                    // instant disintegration!
+                    // monsters.Remove(monster);
+                }
+
+                var laser = lasers.SingleOrDefault(l => l.X == x && l.Y == y);
+                if (laser != null) {
+                    if (laser.Direction == Invert(this.Direction))
+                    {
+                        addBeam = false;
+                        isFiring = false;                        
+                    }
+                    else
+                    {
+                        // KABOOM!
+                        // laser.Explode();
+                    }
+                }
+
+                if (addBeam)
+                {
+                    this.Beams.Add(next);
                 }
             }
         }

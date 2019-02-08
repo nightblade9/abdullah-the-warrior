@@ -21,6 +21,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         private readonly List<Entity> monsters = new List<Entity>();
         private readonly List<AbstractEntity> walls = new List<AbstractEntity>();
         private readonly List<LaserReceptacle> lasers = new List<LaserReceptacle>();
+        private readonly List<TeleporterPad> teleporters = new List<TeleporterPad>();
         private int playerTurnsLeftUntilMonsterTurns = 0;
 
         private readonly int mapHeight;
@@ -58,8 +59,8 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             this.swordSkillsManager = new SwordSkillsManager(this.player, this.monsters, this.walls);
 
             this.map = this.GenerateWalls();
-            this.GenerateLasers(map);
-
+            this.GenerateLasers();
+            this.GenerateTeleporters();
             this.GenerateMonsters();
 
             var emptySpot = this.FindEmptySpot();
@@ -87,7 +88,38 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             });
         }
 
-        private void GenerateLasers(ArrayMap<bool> map)
+        private void GenerateTeleporters()
+        {
+            const int NUM_TELEPORTERS = 2;
+            const int PADS_PER_TELEPORTER = 2;
+
+            while (teleporters.Count < NUM_TELEPORTERS * PADS_PER_TELEPORTER) {
+                var location1 = this.FindEmptyLocation(map, monsters, walls, lasers, teleporters);
+                var location2 = this.FindEmptyLocation(map, monsters, walls, lasers, teleporters);
+                
+                var pad1 = new TeleporterPad(location1.Item1, location1.Item2);
+                var pad2 = new TeleporterPad(location2.Item1, location2.Item2);
+                pad1.Destination = pad2;
+                pad2.Destination = pad1;
+
+                this.teleporters.Add(pad1);
+                this.teleporters.Add(pad2);
+            }
+        }
+
+        private Tuple<int, int> FindEmptyLocation(ArrayMap<bool> map, List<Entity> monsters, List<AbstractEntity> walls, List<LaserReceptacle> lasers, List<TeleporterPad> teleporters)
+        {
+            while (true) {
+                var x = PrototypeGameConsole.GlobalRandom.Next(0, map.Width);
+                var y = PrototypeGameConsole.GlobalRandom.Next(0, map.Height);
+
+                if (map[x, y] == false && monsters.All(m => m.X != x || m.Y != y) && walls.All(w => w.X != x || w.Y != y) && lasers.All(l => l.X != x || l.Y != y) && teleporters.All(t => t.X != x || t.Y != y)) {
+                    return new Tuple<int, int>(x, y);
+                }
+            }
+        }
+
+        private void GenerateLasers()
         {
             var numLasers = PrototypeGameConsole.GlobalRandom.Next(3, 5); //
             for (var i = 0; i < numLasers; i++) {
@@ -418,6 +450,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                         }
                     }
                 //}
+            }
+
+            foreach (var teleporter in this.teleporters) {
+                // IF IN FOV
+                this.DrawCharacter(teleporter.X, teleporter.Y, teleporter.Character, teleporter.Color);
             }
 
             this.DrawCharacter(player.X, player.Y, player.Character, player.Color);

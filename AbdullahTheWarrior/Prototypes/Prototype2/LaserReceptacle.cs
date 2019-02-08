@@ -32,7 +32,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             }
         }
 
-        public static Tuple<int, int, int, int> FindLaserLocation(ArrayMap<bool> map, List<LaserReceptacle> lasers, List<Vector2> walls, List<Entity> monsters)
+        public static Tuple<int, int, int, int> FindLaserLocation(ArrayMap<bool> map, List<LaserReceptacle> lasers, List<AbstractEntity> walls, List<Entity> monsters)
         {
             var maxLength = MaxLengthFactor.X * map.Width;
             int halfLength = (int)Math.Round(maxLength / 2);
@@ -99,7 +99,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             }
         }
 
-        public void Fire(List<LaserReceptacle> lasers, List<Vector2> walls, List<Entity> monsters, int mapWidth, int mapHeight)
+        public void Fire(List<LaserReceptacle> lasers, List<AbstractEntity> walls, List<Entity> monsters, int mapWidth, int mapHeight)
         {
             this.Beams.Clear();
 

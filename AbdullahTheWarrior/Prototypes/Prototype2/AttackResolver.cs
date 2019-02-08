@@ -41,7 +41,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             return damage;
         }
 
-        public static void ApplyKnockbacks(Player player, Entity monster, IList<Entity> monsters, IList<Vector2> walls, int damage)
+        public static void ApplyKnockbacks(Player player, Entity monster, IList<Entity> monsters, IList<AbstractEntity> walls, int damage)
         {
             if (PrototypeGameConsole.GlobalRandom.Next(0, 100) <= Player.KnockBackProbability)
             {

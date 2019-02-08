@@ -19,7 +19,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 
         private readonly Player player;
         private readonly List<Entity> monsters = new List<Entity>();
-        private readonly List<Vector2> walls = new List<Vector2>();
+        private readonly List<AbstractEntity> walls = new List<AbstractEntity>();
         private readonly List<LaserReceptacle> lasers = new List<LaserReceptacle>();
         private int playerTurnsLeftUntilMonsterTurns = 0;
 
@@ -111,7 +111,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                     // Invert. We want an internal cave surrounded by walls.
                     map[x, y] = !map[x, y];
                     if (map[x, y]) {
-                        this.walls.Add(new Vector2(x, y));
+                        this.walls.Add(new AbstractEntity(x, y, '#', Palette.LightGrey)); // FOV determines colour
                     }
                 }
             }
@@ -374,9 +374,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 var colour = Palette.Grey;
                 if (IsInPlayerFov((int)wall.X, (int)wall.Y))
                 {
-                    colour = Palette.LightGrey;
+                    colour = wall.Color;
                 }
-                this.DrawCharacter(wall.X, wall.Y, '#', colour);
+                this.DrawCharacter(wall.X, wall.Y, wall.Character, colour);
             }
 
             foreach (var monster in this.monsters)

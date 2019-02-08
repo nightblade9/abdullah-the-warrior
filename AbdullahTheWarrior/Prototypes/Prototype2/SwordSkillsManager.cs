@@ -32,11 +32,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         public bool IsActive { get; private set; } = false;
         private Entity player;
         private IEnumerable<Entity> monsters;
-        private IEnumerable<Vector2> walls;
+        private IEnumerable<AbstractEntity> walls;
         private int anglePlayerFacing = 0; // right
         private Skill currentSkill;
 
-        public SwordSkillsManager(Entity player, IEnumerable<Entity> monsters, IEnumerable<Vector2> walls)
+        public SwordSkillsManager(Entity player, IEnumerable<Entity> monsters, IEnumerable<AbstractEntity> walls)
         {
             this.player = player;
 

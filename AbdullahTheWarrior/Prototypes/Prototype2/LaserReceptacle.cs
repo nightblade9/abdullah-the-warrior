@@ -10,14 +10,11 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
     /// A receptacle for a laser. Two of these, facing each other, make up a laser.
     // (You can also have just one of these firing endlessly.) Also contains static methods, like location finding.
     /// </summary>
-    class LaserReceptacle
+    class LaserReceptacle : AbstractEntity
     {
         private static readonly Vector2 MaxLengthFactor = new Vector2(0.3f, 0.5f); // 30% map width, 50% map height
         private const int MinLength = 5;
 
-        public int X {get; private set;}
-        public int Y {get; private set;}
-        
         public Direction Direction {get; private set;}
 
         public bool IsOn { get; private set; } = false;
@@ -25,6 +22,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         public IList<Vector2> Beams { get; private set; } = new List<Vector2>();
 
         public LaserReceptacle(int x, int y, Direction direction, bool isAlternating)
+        : base(direction == Direction.Right ? '}' : '{', Palette.Brown)
         {
             this.X = x;
             this.Y = y;
@@ -137,12 +135,15 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                     walls.Remove(wall);
                 }
                 
+                // Harming the player is done in PrototypeGameConsole.cs; look for: player.Die()
                 var monster = monsters.SingleOrDefault(m => m.X == x && m.Y == y);
                 if (monster != null) {
                     // instant disintegration!
                     monster.Die();
                 }
 
+                // Should be a single laser but in some cases, we generate two on the same spot
+                // eg. seed #285359147
                 var laser = lasers.SingleOrDefault(l => l.X == x && l.Y == y);
                 if (laser != null) {
                     if (laser.Direction == Invert(this.Direction))

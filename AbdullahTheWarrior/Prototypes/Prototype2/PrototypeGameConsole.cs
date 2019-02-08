@@ -407,14 +407,7 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
             foreach (var laser in this.lasers)
             {
                 //if (IsInPlayerFov(laser.X, laser.Y)) {
-                    var character = ' ';
-                    switch (laser.Direction) {
-                        case Direction.Left: character = '{'; break;
-                        case Direction.Right: character = '}'; break;
-                        // case Direction.Up: character = '^'; break;
-                        // case Direction.Down: character = 'v'; break;
-                    }
-                    this.DrawCharacter(laser.X, laser.Y, character, Palette.Brown);
+                    this.DrawCharacter(laser.X, laser.Y, laser.Character, laser.Color);
 
                     foreach (var beam in laser.Beams)
                     {

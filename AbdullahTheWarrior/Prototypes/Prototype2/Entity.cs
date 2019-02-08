@@ -6,17 +6,13 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
     /// <summary>
     /// A living, breathing entity; NOT an ECS entity.
     /// </summary>
-    public class Entity
+    public class Entity : AbstractEntity
     {
         public string Name { get; private set; }
         public int CurrentHealth { get; private set; }
         public int TotalHealth { get; }
         public int Strength { get; }
         public int Defense { get; }
-        public Color Color { get; set; }
-        public char Character { get; set; }
-        public int X { get; set; }
-        public int Y { get; set; }
 
         public int VisionRange { get; }
         public int NumberOfTurns { get; } = 1;
@@ -33,10 +29,9 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
         }
         
         public Entity(string name, char character, Color color, int health, int strength, int defense, int visionRange = 5, int numberOfTurns = 1, int numberOfAttacks = 1)
+        : base(character, color)
         {
             this.Name = name;
-            this.Character = character;
-            this.Color = color;
             this.CurrentHealth = health;
             this.TotalHealth = health;
             this.Strength = strength;

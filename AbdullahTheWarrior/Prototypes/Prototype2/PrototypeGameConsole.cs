@@ -126,7 +126,6 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 // Generates overlapping lasers. That's not a bad thing.
                 var location = LaserReceptacle.FindLaserLocation(map, lasers, walls, monsters);
                 // horizontal bar
-                System.Console.WriteLine($"H laser at {location.Item1}, {location.Item2}");
                 bool isAlternating = PrototypeGameConsole.GlobalRandom.NextBoolean();
                 this.lasers.Add(new LaserReceptacle(location.Item1, location.Item2, Direction.Right, isAlternating));
                 this.lasers.Add(new LaserReceptacle(location.Item3, location.Item2, Direction.Left, isAlternating));
@@ -174,6 +173,13 @@ namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
                 this.playerTurnsLeftUntilMonsterTurns = player.NumberOfTurns;
                 this.ProcessMonsterTurns();
                 this.ProcessLasers();
+
+                foreach (var teleporter in this.teleporters) {
+                    teleporter.TeleportContents(this.monsters, this.player);
+                }
+
+                this.monsters.ForEach(m => m.WasJustTeleported = false);
+                this.player.WasJustTeleported = false;
             }
         }
 

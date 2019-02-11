@@ -2,11 +2,17 @@ using Microsoft.Xna.Framework;
 
 namespace DeenGames.AbdullahTheWarrior.Prototypes.Prototype2
 {
+    /// <summary>
+    /// Stuff common to all entities. Like x/y/char/colour, etc.
+    /// </summary>
     public class AbstractEntity {
         public Color Color { get; set; }
         public char Character { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+
+        // Used to prevent things being teleported twice or more in one turn, since we land on the destination teleporter pad.
+        public bool WasJustTeleported { get; set; } = false;
         
         public AbstractEntity(int x, int y, char character, Color color) : this(character, color)
         {
